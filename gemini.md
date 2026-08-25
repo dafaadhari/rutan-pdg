@@ -52,18 +52,27 @@ Portal instansi ini **tidak** menggunakan konsep majalah/blog biasa (seperti DOG
 * [x] Inisialisasi proyek Laravel `rutan-pdg`.
 * [x] Konfigurasi database MySQL (`rutan_pdg`).
 * [x] Pembuatan Migration & Model untuk tabel `beritas` dan `sessions`.
-* [x] Instalasi dan konfigurasi **Filament PHP v3** beserta akun Super Admin.
+* [x] Instalasi dan konfigurasi **Filament PHP v3** (`v3.3.55`) beserta akun Super Admin.
+* [x] Konfigurasi **BeritaResource** di Filament Admin Panel (Rich Editor, File Upload, Auto Slug, Badge Status).
+* [x] Publikasi aset CSS & JS Filament dan Livewire ke direktori `public/`.
 * [x] Perancangan dan implementasi layout halaman depan publik (`resources/views/welcome.blade.php`) dengan tema `bg-gray-900`.
 * [x] Integrasi `concurrently` di `package.json` melalui skrip `"serve"`.
 
 ---
 
 ## 5. Target Selanjutnya (What's Next / Pending Tasks)
-Langkah pengembangan selanjutnya yang harus dieksekusi secara bertahap:
-1. **Konfigurasi Filament Resource (`BeritaResource`):**
-   * Mengatur form input admin (Judul, Slug otorisasi, Textarea/Rich Text Editor untuk Konten, File Upload untuk Gambar Sampul, dan Select untuk Status Draft/Publikasi).
-   * Mengatur tabel tampilan data berita di dasbor admin.
-2. **Koneksi Database ke Halaman Publik:**
-   * Mengambil data berita dari tabel `beritas` (hanya yang berstatus `publikasi`) untuk ditampilkan secara dinamis ke halaman `welcome.blade.php`.
-3. **Halaman Detail Berita Publik (`/berita/{slug}`):**
-   * Membuat *route*, *controller*, dan *view* khusus untuk membaca artikel secara utuh saat pengguna mengklik salah satu berita.
+Langkah penyesuaian & pengembangan selanjutnya:
+1. **Penyesuaian Alur Redirect Create Berita:**
+   * Mengubah pengalihan halaman setelah klik *Create/Save* dari halaman Edit ke daftar index berita (`/admin/beritas`).
+2. **Klarifikasi & Optimasi Kolom Slug:**
+   * Menjelaskan fungsi `slug` untuk SEO URL dan membuat input slug bersifat *read-only* / terisi otomatis tanpa perlu diketik manual.
+3. **Kustomisasi Branding & Desain Admin Panel:**
+   * Mengubah nama aplikasi dari "Laravel" menjadi **"Rutan Kelas IIB Pandeglang"** di `.env` dan Admin Panel.
+   * Menyesuaikan skema warna panel Filament (Primary Color) agar selaras dengan identitas instansi.
+4. **Integrasi Data Berita ke Dashboard Publik (`welcome.blade.php`):**
+   * Mengambil data berita berkategori `'publikasi'` secara dinamis dari database MySQL ke halaman depan.
+   * Menampilkan gambar sampul, judul, tanggal, dan ringkasan isi berita.
+5. **Halaman Detail Berita Publik (`/berita/{slug}`):**
+   * Membuat rute & tampilan detail berita agar pengunjung publik dapat membaca artikel secara utuh saat berita diklik.
+6. **Seeder Data Dummy Berita Publik:**
+   * Menyiapkan data seeder berita resmi rutan agar dashboard publik terisi data sampel berkualitas.
