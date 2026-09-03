@@ -1,78 +1,94 @@
-# Dokumentasi Proyek: Portal Informasi Rutan Kelas IIB Pandeglang
+# Blueprint & Dokumentasi Proyek: Portal Informasi Rutan Kelas IIB Pandeglang
 
-Dokumen ini adalah acuan kerja (blueprint) bagi AI Assistant / Agent di text editor untuk memahami arsitektur, teknologi, dan status pengembangan portal resmi **Rutan Kelas IIB Pandeglang** (di bawah naungan Kementerian Imigrasi dan Pemasyarakatan RI).
+Dokumen ini adalah acuan kerja (blueprint) utama bagi AI Agent / Assistant di text editor untuk memahami arsitektur teknis, desain, dan status pengerjaan portal resmi **Rutan Kelas IIB Pandeglang** (di bawah naungan Kementerian Imigrasi dan Pemasyarakatan RI).
 
 ---
 
 ## 1. Tech Stack & Dependensi
 * **Framework:** Laravel (Latest)
-* **Admin Panel:** Filament PHP v3 (`^3.2`)
+* **Architecture:** Monolith Blade Murni (Tanpa Filament / Livewire agar 100% kompatibel dengan InfinityFree & Anti-Bot Shield).
 * **Styling & CSS:** Tailwind CSS + Vite
 * **Database:** MySQL (`rutan_pdg`)
-* **Testing:** Pest (Tersedia, belum diimplementasikan secara masif)
-* **Authentication:** Custom via Filament Panel (`/admin`) — Tanpa Jetstream / Breeze.
-* **Helper Tools:** `concurrently` (untuk menjalankan `php artisan serve` dan `npm run dev` secara bersamaan melalui perintah `npm run serve`).
+* **Authentication:** Custom Laravel Auth Guard (`users` table, HTTP Session).
+* **Helper Tools:** `concurrently` (menjalankan `php artisan serve` dan `npm run dev` secara bersamaan via `npm run serve`).
 
 ---
 
-## 2. Struktur Database & Skema
-Proyek ini menggunakan tabel-tabel utama berikut:
+## 2. Skema Database
 
-### A. Tabel `beritas` (Manajemen Artikel & Publikasi)
-* `id` (Primary Key)
-* `judul` (String)
+### A. Tabel `beritas`
+* `id` (Primary Key, BigInt)
+* `judul` (String, 255)
 * `slug` (String, Unique)
-* `konten` (Text / Rich Text)
-* `gambar_sampul` (String, Nullable)
-* `status` (Enum: `draft`, `publikasi`, Default: `draft`)
+* `konten` (Text)
+* `gambar_sampul` (String, Nullable - Menyimpan path file `storage/berita/...`)
+* `status` (Enum: `'draft'`, `'publikasi'`, Default: `'draft'`)
 * `timestamps` (`created_at`, `updated_at`)
 
-### B. Tabel Bawaan Laravel
-* `users` (Digunakan oleh Filament untuk akun admin)
-* `sessions` (Menyimpan sesi login dan web state)
+### B. Tabel System Bawaan
+* `users` (Menyimpan data akun admin, e.g. `admin@rutan.go.id`)
+* `sessions` (Menyimpan state login & session ID)
 
 ---
 
-## 3. Panduan Desain & UI/UX (Design System)
-Portal instansi ini **tidak** menggunakan konsep majalah/blog biasa (seperti DOGMA), melainkan berfokus sebagai **Portal Layanan Publik & Humas Pemerintahan**.
+## 3. Design System & Identitas Visual
+Portal ini dirancang sebagai **Portal Layanan Publik & Humas Pemerintahan Resmi**.
 
-* **Primary Color / Tema Warna:** 
-  * Dominan menggunakan **`bg-gray-900`** (Abu-abu sangat gelap / charcoal) untuk memancarkan kesan formal, tegas, profesional, dan berwibawa.
-* **Komponen Utama Halaman Publik (`welcome.blade.php`):**
-  * **Top Bar Kementerian:** Pita hitam tipis di paling atas bertuliskan identitas kementerian.
-  * **Navbar Instansi:** Logo Rutan, Judul Instansi, dan navigasi menu utama.
-  * **Hero Section (Split Layout):** Sisi kiri teks sambutan dan moto *PASTI*, sisi kanan placeholder visual/foto gedung.
-  * **Panel Layanan Publik (Quick Access):** 4 kotak grid menonjol untuk layanan esensial (Jadwal Besuk, Titipan Barang, Program Integrasi, Pengaduan).
-  * **Seksi Publikasi / Berita:** Layout asimetris (1 Berita Utama di kiri, Daftar Berita Samping di kanan).
-  * **Footer Resmi:** Informasi kontak, alamat (Jl. Raya Pandeglang - Serang), dan jam layanan operasional.
-
----
-
-## 4. Status Pengerjaan (What's Done)
-* [x] Inisialisasi proyek Laravel `rutan-pdg`.
-* [x] Konfigurasi database MySQL (`rutan_pdg`).
-* [x] Pembuatan Migration & Model untuk tabel `beritas` dan `sessions`.
-* [x] Instalasi dan konfigurasi **Filament PHP v3** (`v3.3.55`) beserta akun Super Admin.
-* [x] Konfigurasi **BeritaResource** di Filament Admin Panel (Rich Editor, File Upload, Auto Slug, Badge Status).
-* [x] Publikasi aset CSS & JS Filament dan Livewire ke direktori `public/`.
-* [x] Perancangan dan implementasi layout halaman depan publik (`resources/views/welcome.blade.php`) dengan tema `bg-gray-900`.
-* [x] Integrasi `concurrently` di `package.json` melalui skrip `"serve"`.
+* **Primary Color / Palette:** Dominan menggunakan **`bg-gray-900`** (Charcoal/Dark Slate) dikombinasikan dengan warna `gray-800` untuk card/panel, serta aksen teks putih dan abu-abu terang.
+* **Komponen Halaman Publik (`welcome.blade.php`):**
+  * **Top Bar:** Identitas Kementerian Imigrasi dan Pemasyarakatan RI.
+  * **Header/Navbar:** Logo Rutan, Judul Instansi, dan Link Navigasi.
+  * **Hero Section (Split Layout):** Sambutan resmi & foto gedung.
+  * **Panel Layanan Publik (Quick Access):** Grid 4 kotak (Jadwal Besuk, Titipan Barang, Program Integrasi, Pengaduan).
+  * **Seksi Publikasi / Berita:** Layout asimetris (1 Berita Utama Sorotan + Daftar Berita Samping).
+  * **Footer:** Alamat instansi, nomor kontak, dan jam operasional.
 
 ---
 
-## 5. Target Selanjutnya (What's Next / Pending Tasks)
-Langkah penyesuaian & pengembangan selanjutnya:
-1. **Penyesuaian Alur Redirect Create Berita:**
-   * Mengubah pengalihan halaman setelah klik *Create/Save* dari halaman Edit ke daftar index berita (`/admin/beritas`).
-2. **Klarifikasi & Optimasi Kolom Slug:**
-   * Menjelaskan fungsi `slug` untuk SEO URL dan membuat input slug bersifat *read-only* / terisi otomatis tanpa perlu diketik manual.
-3. **Kustomisasi Branding & Desain Admin Panel:**
-   * Mengubah nama aplikasi dari "Laravel" menjadi **"Rutan Kelas IIB Pandeglang"** di `.env` dan Admin Panel.
-   * Menyesuaikan skema warna panel Filament (Primary Color) agar selaras dengan identitas instansi.
-4. **Integrasi Data Berita ke Dashboard Publik (`welcome.blade.php`):**
-   * Mengambil data berita berkategori `'publikasi'` secara dinamis dari database MySQL ke halaman depan.
-   * Menampilkan gambar sampul, judul, tanggal, dan ringkasan isi berita.
-5. **Halaman Detail Berita Publik (`/berita/{slug}`):**
-   * Membuat rute & tampilan detail berita agar pengunjung publik dapat membaca artikel secara utuh saat berita diklik.
-6. **Seeder Data Dummy Berita Publik:**
-   * Menyiapkan data seeder berita resmi rutan agar dashboard publik terisi data sampel berkualitas.
+## 4. Status Pengerjaan Terkini (Current Progress)
+* [x] Inisialisasi proyek Laravel `rutan-pdg` & Git repository.
+* [x] Konfigurasi Database MySQL & Migration (`beritas`, `users`, `sessions`).
+* [x] Perancangan UI Halaman Depan Publik (`resources/views/welcome.blade.php`) tema `bg-gray-900`.
+* [x] Konfigurasi `package.json` & `concurrently` (`npm run serve`).
+* [x] **Pembersihan Filament & Livewire (Tahap 1 - Berjalan):**
+  * [x] **Langkah 1:** Menghapus registrasi `AdminPanelProvider::class` di `bootstrap/providers.php`.
+  * [x] **Langkah 2:** Menghapus direktori `app/Filament` dan `app/Providers/Filament`.
+  * [x] **Langkah 3:** Menghapus aset `public/css/filament`, `public/js/filament`, dan `public/vendor/livewire`.
+
+---
+
+## 5. Checkpoint & Target Selanjutnya (Resume Setelah Break)
+
+### A. Selesaikan Pembersihan Filament (Immediate Tasks)
+1. **Langkah 4:** Jalankan perintah di terminal untuk menghapus package:
+   ```powershell
+   composer remove filament/filament
+   ```
+2. **Langkah 5:** Bersihkan cache aplikasi:
+   ```powershell
+   php artisan optimize:clear
+   ```
+3. **Langkah 6:** Verifikasi routing:
+   ```powershell
+   php artisan route:list
+   ```
+
+### B. Tahap Pengembangan Custom Blade Admin & Publik
+1. **Pembuatan Autentikasi Admin:**
+   * Membuat `app/Http/Controllers/AuthController.php` (login, proses autentikasi, logout).
+   * Membuat view form login `resources/views/login.blade.php` (tema `bg-gray-900`).
+2. **Manajemen Berita (CRUD Admin):**
+   * Membuat `app/Http/Controllers/Admin/BeritaController.php`.
+   * Membuat views:
+     * `resources/views/admin/berita/index.blade.php` (list berita, badge status, pagination).
+     * `resources/views/admin/berita/create.blade.php` (form tambah berita & upload gambar).
+     * `resources/views/admin/berita/edit.blade.php` (form edit berita & ganti gambar).
+3. **Penyimpanan Berkas Media:**
+   * Menjalankan `php artisan storage:link` untuk symlink direktori `public/storage`.
+4. **Modul Publik Berita:**
+   * Menghubungkan query berita dinamis di `welcome.blade.php`.
+   * Membuat view detail berita `resources/views/berita/show.blade.php` (`/berita/{slug}`).
+5. **Data Dummy & Seeder:**
+   * Menyiapkan `BeritaSeeder` untuk mengisi sampel giat rutan.
+6. **Persiapan Deployment:**
+   * Konfigurasi `.env` produksi & struktur `public_html` untuk shared hosting InfinityFree.
