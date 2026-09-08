@@ -48,47 +48,67 @@ Portal ini dirancang sebagai **Portal Layanan Publik & Humas Pemerintahan Resmi*
 ## 4. Status Pengerjaan Terkini (Current Progress)
 * [x] Inisialisasi proyek Laravel `rutan-pdg` & Git repository.
 * [x] Konfigurasi Database MySQL & Migration (`beritas`, `users`, `sessions`).
-* [x] Perancangan UI Halaman Depan Publik (`resources/views/welcome.blade.php`) tema `bg-gray-900`.
-* [x] Konfigurasi `package.json` & `concurrently` (`npm run serve`).
-* [x] **Pembersihan Filament & Livewire (Tahap 1 - Berjalan):**
-  * [x] **Langkah 1:** Menghapus registrasi `AdminPanelProvider::class` di `bootstrap/providers.php`.
-  * [x] **Langkah 2:** Menghapus direktori `app/Filament` dan `app/Providers/Filament`.
-  * [x] **Langkah 3:** Menghapus aset `public/css/filament`, `public/js/filament`, dan `public/vendor/livewire`.
+* [x] **Pembersihan Total Filament & Livewire (100% Blade Monolith):**
+  * [x] Menghapus registrasi `AdminPanelProvider::class` di `bootstrap/providers.php`.
+  * [x] Menghapus direktori `app/Filament` dan `app/Providers/Filament`.
+  * [x] Menghapus aset `public/css/filament`, `public/js/filament`, dan `public/vendor/livewire`.
+  * [x] Menghapus dependensi `"filament/filament"` dari `composer.json`.
+* [x] **Modul Autentikasi Admin (Blade & HTTP Session):**
+  * [x] `app/Http/Controllers/AuthController.php` (login form, autentikasi aman, logout).
+  * [x] View form login `resources/views/auth/login.blade.php` (tema formal `bg-gray-950`).
+* [x] **Modul Dasbor & Manajemen Berita Admin (CRUD Blade):**
+  * [x] Layout admin `resources/views/layouts/admin.blade.php` (top bar, identitas instansi, flash alerts).
+  * [x] `app/Http/Controllers/Admin/BeritaController.php` (index, create, store, edit, update, destroy, unique slug generator, auto delete old image).
+  * [x] View daftar berita `resources/views/admin/berita/index.blade.php` (tabel thumbnail, badge status, filter pencarian, pagination).
+  * [x] View form tambah berita `resources/views/admin/berita/create.blade.php` (live slug preview, image preview client-side).
+  * [x] View form edit berita `resources/views/admin/berita/edit.blade.php` (pratinjau sampul lama & opsi ganti gambar).
+* [x] **Modul Publik Beranda & Detail Berita:**
+  * [x] Rute publik & admin di `routes/web.php` dengan proteksi middleware `auth` dan `guest`.
+  * [x] Integrasi data dinamis di `resources/views/welcome.blade.php` (1 berita utama + 3 sampingan, link detail, link akses admin).
+  * [x] View detail berita `resources/views/berita/show.blade.php` (breadcrumb, metadata humas, konten terformat, sidebar artikel terkini).
+  * [x] **Navbar Resmi Multi-Level Dropdown ([resources/views/partials/navbar.blade.php](file:///c:/Users/HP/rutan-pdg/resources/views/partials/navbar.blade.php)):**
+    * Navigasi standar portal Ditjenpas Kemenimipas RI (Home, Tentang Kami, Layanan, Informasi Publik, Berita).
+    * Sub-menu dropdown lengkap dan responsif dengan dukungan mobile drawer accordion.
+* [x] **Modul Halaman Dropdown Navigasi (23 Halaman Statis):**
+  * [x] `app/Http/Controllers/PageController.php` (routing dinamis slug → view dengan penanganan 404).
+  * [x] `resources/views/layouts/page.blade.php` (layout 2 kolom: konten + sidebar navigasi kategori, breadcrumb, footer resmi).
+  * [x] **Tentang Kami (8/8 halaman):** Motto dan Logo, Sejarah, UPT, Profil Organisasi, Profil Pejabat, Struktur Organisasi, Strategi Organisasi, Kontak Kami.
+  * [x] **Layanan Publik (7/7 halaman):** Permohonan Data dan Informasi, Media Massa, SIMONEV Bama, Perizinan Penelitian, Perizinan Magang, Perizinan Peliputan, Pengaduan.
+  * [x] **Informasi Publik (8/8 halaman):** LAKIP, DIPA, Laporan Tahunan, Laporan Keuangan, Rencana Strategis, IKU, Perjanjian Kinerja, Hasil Survei SPAK/SPKP.
+* [x] **Data Seeder Awal:**
+  * [x] `database/seeders/AdminUserSeeder.php` (`admin@rutan.go.id` / `password`).
+  * [x] `database/seeders/BeritaSeeder.php` (artikel giat resmi rutan berstatus publikasi & draft).
+  * [x] `database/seeders/DatabaseSeeder.php`.
 
 ---
 
-## 5. Checkpoint & Target Selanjutnya (Resume Setelah Break)
+## 5. Panduan Menjalankan & Deployment
 
-### A. Selesaikan Pembersihan Filament (Immediate Tasks)
-1. **Langkah 4:** Jalankan perintah di terminal untuk menghapus package:
+### A. Menjalankan di Komputer Lokal (Local Environment Setup)
+1. **Pastikan stack PHP & MySQL terpasang:**
+   * Sangat disarankan mengunduh dan memasang **Laragon** (atau XAMPP) yang sudah memaketkan PHP 8.2+, Composer, dan MySQL.
+2. **Install Dependensi & Konfigurasi Basis Data:**
    ```powershell
-   composer remove filament/filament
+   composer install
+   php artisan key:generate
+   php artisan migrate --seed
+   php artisan storage:link
    ```
-2. **Langkah 5:** Bersihkan cache aplikasi:
+3. **Jalankan Aplikasi:**
    ```powershell
-   php artisan optimize:clear
+   npm install
+   npm run serve
    ```
-3. **Langkah 6:** Verifikasi routing:
-   ```powershell
-   php artisan route:list
-   ```
+   *(Atau secara manual: `php artisan serve` di satu terminal dan `npm run dev` di terminal lainnya).*
 
-### B. Tahap Pengembangan Custom Blade Admin & Publik
-1. **Pembuatan Autentikasi Admin:**
-   * Membuat `app/Http/Controllers/AuthController.php` (login, proses autentikasi, logout).
-   * Membuat view form login `resources/views/login.blade.php` (tema `bg-gray-900`).
-2. **Manajemen Berita (CRUD Admin):**
-   * Membuat `app/Http/Controllers/Admin/BeritaController.php`.
-   * Membuat views:
-     * `resources/views/admin/berita/index.blade.php` (list berita, badge status, pagination).
-     * `resources/views/admin/berita/create.blade.php` (form tambah berita & upload gambar).
-     * `resources/views/admin/berita/edit.blade.php` (form edit berita & ganti gambar).
-3. **Penyimpanan Berkas Media:**
-   * Menjalankan `php artisan storage:link` untuk symlink direktori `public/storage`.
-4. **Modul Publik Berita:**
-   * Menghubungkan query berita dinamis di `welcome.blade.php`.
-   * Membuat view detail berita `resources/views/berita/show.blade.php` (`/berita/{slug}`).
-5. **Data Dummy & Seeder:**
-   * Menyiapkan `BeritaSeeder` untuk mengisi sampel giat rutan.
-6. **Persiapan Deployment:**
-   * Konfigurasi `.env` produksi & struktur `public_html` untuk shared hosting InfinityFree.
+4. **Kredensial Login Admin Default:**
+   * URL: `http://127.0.0.1:8000/admin/login`
+   * Email: `admin@rutan.go.id`
+   * Password: `password`
+
+### B. Persiapan Deployment InfinityFree / Shared Hosting
+* Export database MySQL lokal dan import ke phpMyAdmin hosting.
+* Tempatkan file inti Laravel di luar direktori publik (misal: `/home/user/laravel-app/`).
+* Pindahkan isi folder `public/` ke direktori `public_html/` atau `htdocs/`.
+* Sesuaikan path di `index.php` untuk mengarah ke vendor dan bootstrap laravel.
+* Atur `.env` produksi (`APP_ENV=production`, `APP_DEBUG=false`, kredensial DB hosting).
