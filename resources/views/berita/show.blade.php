@@ -70,7 +70,7 @@
 
                 <!-- Isi Artikel Berita -->
                 <div class="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-4 text-justify font-normal">
-                    {!! nl2br(e($berita->konten)) !!}
+                    {!! $berita->konten !!}
                 </div>
 
                 <!-- Back Navigation Action -->
