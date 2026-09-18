@@ -194,9 +194,9 @@
             <div>
                 <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-widest">Jam Layanan</h4>
                 <ul class="text-sm space-y-2 text-gray-400">
-                    <li>Senin - Kamis: 08.00 - 14.00 WIB</li>
-                    <li>Jumat: 08.00 - 11.30 WIB</li>
-                    <li>Sabtu: 08.00 - 12.00 WIB (Kunjungan Khusus)</li>
+                    <li>Senin: 08.00 - 14.00 WIB</li>
+                    <li>Rabu: 08.00 - 14.00 WIB</li>
+                    <li>Sabtu: 08.00 - 12.00 WIB</li>
                     <li>Minggu & Hari Libur: Tutup</li>
                 </ul>
             </div>
