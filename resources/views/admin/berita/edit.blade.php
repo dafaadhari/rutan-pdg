@@ -20,7 +20,7 @@
     </div>
 
     <!-- Edit Form Card -->
-    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 sm:p-8 shadow-xl">
         <form action="{{ route('admin.berita.update', $berita) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
@@ -41,9 +41,9 @@
                 @enderror
 
                 <!-- Current Slug -->
-                <div class="mt-2 text-xs text-gray-500 flex items-center gap-1 font-mono">
+                <div class="mt-2 text-xs text-gray-500 flex flex-wrap items-center gap-1 font-mono">
                     <span>URL Slug saat ini:</span>
-                    <span id="slug-preview" class="text-amber-400/90 font-medium">/berita/{{ $berita->slug }}</span>
+                    <span id="slug-preview" class="text-amber-400/90 font-medium break-all">/berita/{{ $berita->slug }}</span>
                 </div>
             </div>
 

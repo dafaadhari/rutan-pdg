@@ -19,14 +19,14 @@
     <!-- BREADCRUMB & HERO HEADER -->
     <section class="bg-gray-900 text-white py-8 border-b border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav class="flex items-center gap-2 text-xs text-gray-400 mb-4">
+            <nav class="flex items-center gap-2 text-xs text-gray-400 mb-4 min-w-0">
                 <a href="{{ url('/') }}" class="hover:text-amber-400 transition">Beranda</a>
                 <span>&gt;</span>
                 <a href="{{ url('/#berita') }}" class="hover:text-amber-400 transition">Publikasi</a>
                 <span>&gt;</span>
-                <span class="text-gray-300 truncate max-w-md">{{ $berita->judul }}</span>
+                <span class="text-gray-300 truncate min-w-0 max-w-md">{{ $berita->judul }}</span>
             </nav>
-            <div class="flex items-center gap-3 text-xs text-amber-400 font-semibold uppercase tracking-wider mb-2">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-amber-400 font-semibold uppercase tracking-wider mb-2">
                 <span>Rilis Resmi</span>
                 <span>&bull;</span>
                 <span>{{ $berita->created_at->translatedFormat('l, d F Y') }}</span>
@@ -56,20 +56,20 @@
                 @endif
 
                 <!-- Metadata Penulis -->
-                <div class="flex items-center justify-between py-3 border-y border-gray-200 text-xs text-gray-500">
+                <div class="flex flex-wrap items-center justify-between gap-2 py-3 border-y border-gray-200 text-xs text-gray-500">
                     <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 flex items-center justify-center font-bold">
+                        <div class="w-7 h-7 shrink-0 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 flex items-center justify-center font-bold">
                             H
                         </div>
                         <span class="font-medium text-gray-700">Ditulis oleh: Tim Humas Rutan Pandeglang</span>
                     </div>
-                    <span class="bg-gray-100 px-2.5 py-1 rounded-md text-gray-600 font-mono">
+                    <span class="hidden sm:inline bg-gray-100 px-2.5 py-1 rounded-md text-gray-600 font-mono break-all">
                         {{ $berita->slug }}
                     </span>
                 </div>
 
                 <!-- Isi Artikel Berita -->
-                <div class="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-4 text-justify font-normal">
+                <div class="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-4 sm:text-justify font-normal break-words [&_img]:max-w-full [&_img]:h-auto [&_iframe]:max-w-full [&_table]:block [&_table]:overflow-x-auto">
                     {!! $berita->konten !!}
                 </div>
 
@@ -84,7 +84,7 @@
 
             <!-- Sidebar Berita Terbaru Lainnya (1 Kolom) -->
             <aside class="space-y-6">
-                <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm sticky top-28">
+                <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm lg:sticky lg:top-20">
                     <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                         Berita Terkini Lainnya
@@ -159,9 +159,9 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row justify-between items-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left text-xs">
             <p>&copy; {{ date('Y') }} Rutan Kelas IIB Pandeglang. Hak Cipta Dilindungi.</p>
-            <div class="mt-3 md:mt-0 flex items-center gap-4">
+            <div class="mt-3 md:mt-0 flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
                 <span class="uppercase tracking-widest text-gray-500 font-semibold">Sistem Informasi Publik</span>
                 <span class="text-gray-700">&bull;</span>
                 <a href="{{ route('login') }}" class="text-gray-500 hover:text-amber-400 transition-colors font-medium">

@@ -12,36 +12,39 @@
 <!-- HEADER INSTANSI (Logo & Nama Satker) -->
 <div class="bg-white border-b border-gray-100 py-3.5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <a href="{{ url('/') }}" class="flex items-center gap-3.5 group">
+        <a href="{{ url('/') }}" class="flex items-center gap-3 sm:gap-3.5 group min-w-0">
             <!-- Lambang Pemasyarakatan / Rutan -->
-            <div class="w-12 h-12 bg-gradient-to-br from-gray-900 to-blue-950 rounded-xl flex items-center justify-center text-amber-400 shadow-md border border-gray-800 group-hover:scale-105 transition">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-gradient-to-br from-gray-900 to-blue-950 rounded-xl flex items-center justify-center text-amber-400 shadow-md border border-gray-800 group-hover:scale-105 transition">
+                <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
                 </svg>
             </div>
-            <div>
-                <p class="text-[11px] font-bold text-gray-600 uppercase tracking-tight leading-tight">
+            <div class="min-w-0">
+                <p class="hidden sm:block text-[11px] font-bold text-gray-600 uppercase tracking-tight leading-tight">
                     Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia
                 </p>
-                <h1 class="text-base sm:text-lg font-black text-gray-900 uppercase tracking-tight leading-none mt-0.5">
+                <h1 class="text-sm sm:text-lg font-black text-gray-900 uppercase tracking-tight leading-tight sm:leading-none mt-0.5">
                     Rumah Tahanan Negara Kelas IIB Pandeglang
                 </h1>
             </div>
         </a>
-
-        <!-- Mobile Hamburger Button -->
-        <button id="mobile-menu-btn" type="button" class="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
     </div>
 </div>
 
 <!-- NAVBAR DENGAN DROPDOWN MULTI-LEVEL (Sticky) -->
 <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Mobile Bar (tetap terlihat saat scroll) -->
+        <div class="md:hidden flex items-center justify-between h-12">
+            <span class="text-xs font-bold uppercase tracking-wider text-gray-700">Menu Navigasi</span>
+            <button id="mobile-menu-btn" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Buka menu navigasi" class="p-2 -mr-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
         <div class="hidden md:flex items-center space-x-1 h-12 text-xs font-bold uppercase tracking-wider">
             
             <!-- 1. HOME -->
@@ -61,7 +64,7 @@
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div class="absolute top-full left-0 pt-1 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div class="absolute top-full left-0 pt-1 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200 z-50">
                     <div class="bg-white border border-gray-200 rounded-xl shadow-xl py-2 overflow-hidden">
                         <a href="{{ route('tentang-kami', 'motto-dan-logo') }}" class="block px-4 py-2 text-xs normal-case font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
                             Motto dan Logo
@@ -103,7 +106,7 @@
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div class="absolute top-full left-0 pt-1 w-96 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div class="absolute top-full left-0 pt-1 w-80 lg:w-96 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200 z-50">
                     <div class="bg-white border border-gray-200 rounded-xl shadow-xl py-2 overflow-hidden">
                         <a href="{{ route('layanan', 'permohonan-data-dan-informasi') }}" class="block px-4 py-2 text-xs normal-case font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
                             Permohonan Data dan Informasi
@@ -143,7 +146,7 @@
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div class="absolute top-full left-0 pt-1 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div class="absolute top-full left-0 pt-1 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200 z-50">
                     <div class="bg-white border border-gray-200 rounded-xl shadow-xl py-2 overflow-hidden">
                         <a href="{{ route('informasi-publik', 'lakip') }}" class="block px-4 py-2 text-xs normal-case font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
                             LAKIP
@@ -183,7 +186,7 @@
         </div>
 
         <!-- Mobile Menu Drawer (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 py-3 space-y-1 text-sm font-medium">
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 py-3 space-y-1 text-sm font-medium max-h-[calc(100dvh-3rem)] overflow-y-auto overscroll-contain">
             <a href="{{ url('/') }}" class="block px-3 py-2 text-red-600 font-bold hover:bg-gray-50 rounded-lg">
                 HOME
             </a>
@@ -259,6 +262,7 @@
             mobileMenu.classList.toggle('hidden');
             hamburgerIcon.classList.toggle('hidden');
             closeIcon.classList.toggle('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', !mobileMenu.classList.contains('hidden'));
         });
     }
 </script>

@@ -18,17 +18,17 @@
 
     <!-- HERO SECTION (TATA LETAK SPLIT) -->
     <section class="bg-gray-900 text-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <!-- Teks Hero -->
                 <div>
                     <div class="inline-block bg-gray-800 border border-gray-700 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-6">
                         Portal Informasi Resmi
                     </div>
-                    <h2 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-6">
                         Mewujudkan Pelayanan <span class="text-amber-400">Pemasyarakatan yang PASTI.</span>
                     </h2>
-                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                    <p class="text-gray-300 text-base sm:text-lg mb-8 leading-relaxed">
                         Kami berkomitmen memberikan pelayanan yang Profesional, Akuntabel, Sinergi, Transparan, dan Inovatif bagi Warga Binaan dan masyarakat luas.
                     </p>
                     <a href="#layanan" class="inline-block bg-amber-500 text-gray-950 px-6 py-3 font-bold text-sm uppercase tracking-wide hover:bg-amber-400 rounded-lg shadow-lg shadow-amber-500/20 transition">
@@ -54,20 +54,20 @@
 
     <!-- PANEL LAYANAN PUBLIK (Ciri khas instansi) -->
     <section id="layanan" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 -mt-10 mb-16">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 shadow-xl">
-            <div class="bg-white p-6 border-t-4 border-amber-500 hover:-translate-y-1 transition duration-300 rounded-b-lg">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 shadow-xl">
+            <div class="bg-white p-4 sm:p-6 border-t-4 border-amber-500 hover:-translate-y-1 transition duration-300 rounded-b-lg">
                 <h3 class="font-bold text-gray-900 mb-2">Jadwal Besuk</h3>
                 <p class="text-xs text-gray-500">Informasi jam kunjungan tatap muka Warga Binaan.</p>
             </div>
-            <div class="bg-white p-6 border-t-4 border-gray-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
+            <div class="bg-white p-4 sm:p-6 border-t-4 border-gray-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
                 <h3 class="font-bold text-gray-900 mb-2">Titipan Barang</h3>
                 <p class="text-xs text-gray-500">SOP dan syarat penitipan barang & makanan.</p>
             </div>
-            <div class="bg-white p-6 border-t-4 border-blue-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
+            <div class="bg-white p-4 sm:p-6 border-t-4 border-blue-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
                 <h3 class="font-bold text-gray-900 mb-2">Program Integrasi</h3>
                 <p class="text-xs text-gray-500">Layanan pengurusan PB, CB, dan CMB resmi.</p>
             </div>
-            <div class="bg-white p-6 border-t-4 border-red-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
+            <div class="bg-white p-4 sm:p-6 border-t-4 border-red-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
                 <h3 class="font-bold text-gray-900 mb-2">Pengaduan</h3>
                 <p class="text-xs text-gray-500">Saluran aspirasi dan pengaduan langsung masyarakat.</p>
             </div>
@@ -78,7 +78,7 @@
     <main id="berita" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
             <div>
-                <h3 class="text-2xl font-extrabold text-gray-900 uppercase tracking-wide">Giat & Informasi Terkini</h3>
+                <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900 uppercase tracking-wide">Giat & Informasi Terkini</h3>
                 <p class="text-xs text-gray-500 mt-1">Publikasi resmi transparansi kegiatan dan pembinaan warga binaan.</p>
             </div>
         </div>
@@ -110,7 +110,7 @@
                             <span>{{ $beritaUtama->created_at->translatedFormat('d F Y') }}</span>
                         </div>
 
-                        <h4 class="text-2xl font-extrabold text-gray-900 group-hover:text-amber-600 transition leading-snug mb-3">
+                        <h4 class="text-xl sm:text-2xl font-extrabold text-gray-900 group-hover:text-amber-600 transition leading-snug mb-3">
                             {{ $beritaUtama->judul }}
                         </h4>
 
@@ -125,7 +125,7 @@
                 </article>
 
                 <!-- List Berita Samping (3 Artikel Lainnya) -->
-                <div class="flex flex-col gap-6 border-l border-gray-200 pl-0 lg:pl-8">
+                <div class="flex flex-col gap-6 lg:border-l border-gray-200 lg:pl-8">
                     @forelse ($beritaLainnya as $item)
                         <article class="group">
                             <a href="{{ route('berita.show', $item->slug) }}" class="block">
@@ -202,9 +202,9 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row justify-between items-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left text-xs">
             <p>&copy; {{ date('Y') }} Rutan Kelas IIB Pandeglang. Hak Cipta Dilindungi.</p>
-            <div class="mt-3 md:mt-0 flex items-center gap-4">
+            <div class="mt-3 md:mt-0 flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
                 <span class="uppercase tracking-widest text-gray-500 font-semibold">Sistem Informasi Publik</span>
                 <span class="text-gray-700">&bull;</span>
                 <a href="{{ route('login') }}" class="text-gray-500 hover:text-amber-400 transition-colors font-medium">

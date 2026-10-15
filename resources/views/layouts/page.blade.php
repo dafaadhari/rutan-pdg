@@ -21,7 +21,7 @@
     <section class="bg-gray-900 text-white py-10 border-b border-gray-800 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Breadcrumb Navigation -->
-            <nav class="flex items-center gap-2 text-xs text-gray-400 mb-3">
+            <nav class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-400 mb-3">
                 <a href="{{ url('/') }}" class="hover:text-red-400 transition">Beranda</a>
                 <span>&gt;</span>
                 <span class="text-gray-300 font-medium">{{ $categoryTitle }}</span>
@@ -32,7 +32,7 @@
             <span class="inline-block text-[11px] font-bold tracking-widest text-red-400 uppercase bg-red-950/60 border border-red-800/80 px-3 py-1 rounded-full mb-2">
                 {{ $categoryTitle }}
             </span>
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight break-words">
                 {{ $pageTitle }}
             </h1>
             <p class="text-xs sm:text-sm text-gray-400 mt-2 max-w-2xl leading-relaxed">
@@ -50,14 +50,14 @@
 
             <!-- Kolom Konten Utama (2 Kolom) -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+                <div class="bg-white rounded-2xl border border-gray-200 p-5 sm:p-8 shadow-sm">
                     @yield('page_content')
                 </div>
             </div>
 
             <!-- Sidebar Navigasi Kategori (1 Kolom) -->
             <aside class="space-y-6">
-                <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm sticky top-20">
+                <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm lg:sticky lg:top-20">
                     <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-red-600"></span>
                         Menu {{ $categoryTitle }}
@@ -131,9 +131,9 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row justify-between items-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left text-xs">
             <p>&copy; {{ date('Y') }} Rutan Kelas IIB Pandeglang. Hak Cipta Dilindungi.</p>
-            <div class="mt-3 md:mt-0 flex items-center gap-4">
+            <div class="mt-3 md:mt-0 flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
                 <span class="uppercase tracking-widest text-gray-500 font-semibold">Sistem Informasi Publik</span>
                 <span class="text-gray-700">&bull;</span>
                 <a href="{{ route('login') }}" class="text-gray-500 hover:text-red-400 transition-colors font-medium">

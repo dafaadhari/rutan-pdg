@@ -20,7 +20,7 @@
     </div>
 
     <!-- Create Form Card -->
-    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 sm:p-8 shadow-xl">
         <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
@@ -40,9 +40,9 @@
                 @enderror
 
                 <!-- Live Slug Preview -->
-                <div class="mt-2 text-xs text-gray-500 flex items-center gap-1 font-mono">
+                <div class="mt-2 text-xs text-gray-500 flex flex-wrap items-center gap-1 font-mono">
                     <span>URL Slug:</span>
-                    <span id="slug-preview" class="text-amber-400/90 font-medium">/berita/...</span>
+                    <span id="slug-preview" class="text-amber-400/90 font-medium break-all">/berita/...</span>
                 </div>
             </div>
 

@@ -77,7 +77,7 @@
 
             <div class="flex gap-2">
                 <select name="status" 
-                        class="bg-gray-850 border border-gray-700/80 rounded-lg px-3.5 py-2 text-sm text-gray-200 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                        class="flex-1 md:flex-none min-w-0 bg-gray-850 border border-gray-700/80 rounded-lg px-3.5 py-2 text-sm text-gray-200 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
                     <option value="">Semua Status</option>
                     <option value="publikasi" {{ $status === 'publikasi' ? 'selected' : '' }}>Publikasi</option>
                     <option value="draft" {{ $status === 'draft' ? 'selected' : '' }}>Draft</option>
@@ -101,7 +101,7 @@
     <!-- Data Table -->
     <div class="bg-gray-900/80 border border-gray-800 rounded-xl overflow-hidden shadow-xl">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-gray-300">
+            <table class="w-full min-w-[760px] text-left text-sm text-gray-300">
                 <thead class="bg-gray-850 text-xs uppercase tracking-wider text-gray-400 border-b border-gray-800">
                     <tr>
                         <th scope="col" class="py-3.5 px-4 w-16 text-center">No</th>

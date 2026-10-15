@@ -8,11 +8,11 @@
     </div>
 
     <!-- Bagan Visual Struktur -->
-    <div class="p-6 bg-gray-50 border border-gray-200 rounded-2xl">
+    <div class="p-4 sm:p-6 bg-gray-50 border border-gray-200 rounded-2xl">
         <div class="flex flex-col items-center space-y-6">
             
             <!-- Pucuk Pimpinan -->
-            <div class="bg-gray-900 text-white px-6 py-3 rounded-xl shadow-lg border-2 border-red-600 text-center w-64">
+            <div class="bg-gray-900 text-white px-6 py-3 rounded-xl shadow-lg border-2 border-red-600 text-center w-full max-w-64">
                 <span class="text-[10px] font-bold text-red-400 uppercase tracking-widest block">Kepala Rutan</span>
                 <span class="text-xs font-bold block mt-0.5">Rutan Kelas IIB Pandeglang</span>
             </div>
