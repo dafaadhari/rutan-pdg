@@ -25,3 +25,9 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Dokumentasi lokal (tidak di-push)
+*.md
+
+# Panduan slot gambar (lokal saja; logo/foto di folder ini tetap di-push)
+/public/images/README.txt

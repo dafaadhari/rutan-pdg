@@ -101,14 +101,14 @@
                     Isi Konten Berita <span class="text-red-400">*</span>
                 </label>
                 <div class="mt-2">
-                    <textarea name="konten" id="konten" rows="12" required
+                    <textarea name="konten" id="konten" rows="12"
                               placeholder="Tuliskan isi rilis berita lengkap di sini..."
                               class="w-full px-4 py-3 bg-gray-850 border {{ $errors->has('konten') ? 'border-red-500' : 'border-gray-700' }} rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-sm leading-relaxed transition">{{ old('konten') }}</textarea>
                 </div>
                 @error('konten')
                     <p class="mt-1 text-xs text-red-400">{{ $message }}</p>
                 @enderror
-                <p class="mt-1 text-xs text-gray-500">Tips: Gunakan enter untuk memisahkan antar paragraf agar mudah dibaca pengunjung.</p>
+                <p class="mt-1 text-xs text-gray-500">Tips: Gunakan menu "Paragraf/Judul" pada editor untuk menyusun struktur berita agar mudah dibaca pengunjung.</p>
             </div>
 
             <!-- Form Actions -->
@@ -126,6 +126,8 @@
     </div>
 
 </div>
+
+@include('admin.partials.tinymce', ['selector' => '#konten'])
 
 <script>
     // Live Auto-Slug Generator Preview

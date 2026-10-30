@@ -2,102 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Halaman;
 
 class PageController extends Controller
 {
     /**
-     * Menu navigasi untuk kategori Tentang Kami.
-     */
-    protected array $tentangKamiMenu = [
-        'motto-dan-logo' => 'Motto dan Logo',
-        'sejarah' => 'Sejarah',
-        'unit-pelaksana-teknis' => 'Unit Pelaksana Teknis',
-        'profil-organisasi' => 'Profil Organisasi',
-        'profil-pejabat' => 'Profil Pejabat',
-        'struktur-organisasi' => 'Struktur Organisasi',
-        'strategi-organisasi' => 'Strategi Organisasi',
-        'kontak-kami' => 'Kontak Kami',
-    ];
-
-    /**
-     * Menu navigasi untuk kategori Layanan.
-     */
-    protected array $layananMenu = [
-        'permohonan-data-dan-informasi' => 'Permohonan Data dan Informasi',
-        'media-massa' => 'Media Massa',
-        'simonev-bama' => 'SIMONEV Bama Kemenimipas',
-        'perizinan-penelitian' => 'Perizinan Penelitian',
-        'perizinan-magang' => 'Perizinan Magang',
-        'perizinan-peliputan' => 'Perizinan Peliputan',
-        'pengaduan' => 'Pengaduan',
-    ];
-
-    /**
-     * Menu navigasi untuk kategori Informasi Publik.
-     */
-    protected array $informasiPublikMenu = [
-        'lakip' => 'LAKIP',
-        'dipa' => 'DIPA',
-        'laporan-tahunan' => 'Laporan Tahunan',
-        'laporan-keuangan' => 'Laporan Keuangan',
-        'rencana-strategis' => 'Rencana Strategis',
-        'iku' => 'IKU (Indikator Kinerja Utama)',
-        'perjanjian-kinerja' => 'Perjanjian Kinerja',
-        'hasil-survei-spak-spkp' => 'Hasil Survei SPAK/SPKP',
-    ];
-
-    /**
      * Menampilkan halaman kategori Tentang Kami.
      */
-    public function tentangKami(string $slug = 'motto-dan-logo')
+    public function tentangKami(?string $slug = null)
     {
-        if (!array_key_exists($slug, $this->tentangKamiMenu)) {
-            abort(404);
-        }
-
-        return view("pages.tentang-kami.{$slug}", [
-            'currentSlug' => $slug,
-            'pageTitle' => $this->tentangKamiMenu[$slug],
-            'categoryTitle' => 'Tentang Kami',
-            'categoryRoute' => 'tentang-kami',
-            'menuItems' => $this->tentangKamiMenu,
-        ]);
+        return $this->tampilkan('tentang-kami', $slug);
     }
 
     /**
      * Menampilkan halaman kategori Layanan.
      */
-    public function layanan(string $slug = 'permohonan-data-dan-informasi')
+    public function layanan(?string $slug = null)
     {
-        if (!array_key_exists($slug, $this->layananMenu)) {
-            abort(404);
-        }
-
-        return view("pages.layanan.{$slug}", [
-            'currentSlug' => $slug,
-            'pageTitle' => $this->layananMenu[$slug],
-            'categoryTitle' => 'Layanan Publik',
-            'categoryRoute' => 'layanan',
-            'menuItems' => $this->layananMenu,
-        ]);
+        return $this->tampilkan('layanan', $slug);
     }
 
     /**
      * Menampilkan halaman kategori Informasi Publik.
      */
-    public function informasiPublik(string $slug = 'lakip')
+    public function informasiPublik(?string $slug = null)
     {
-        if (!array_key_exists($slug, $this->informasiPublikMenu)) {
-            abort(404);
-        }
+        return $this->tampilkan('informasi-publik', $slug);
+    }
 
-        return view("pages.informasi-publik.{$slug}", [
-            'currentSlug' => $slug,
-            'pageTitle' => $this->informasiPublikMenu[$slug],
-            'categoryTitle' => 'Informasi Publik',
-            'categoryRoute' => 'informasi-publik',
-            'menuItems' => $this->informasiPublikMenu,
+    /**
+     * Mengambil halaman berstatus publikasi berdasarkan kategori & slug.
+     * Tanpa slug, tampilkan halaman pertama sesuai urutan menu.
+     */
+    protected function tampilkan(string $kategori, ?string $slug)
+    {
+        $menuItems = Halaman::publikasi()
+            ->where('kategori', $kategori)
+            ->urut()
+            ->get(['id', 'kategori', 'slug', 'judul']);
+
+        $slug ??= $menuItems->first()?->slug;
+
+        $halaman = Halaman::publikasi()
+            ->where('kategori', $kategori)
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return view('layouts.page', [
+            'halaman' => $halaman,
+            'currentSlug' => $halaman->slug,
+            'pageTitle' => $halaman->judul,
+            'categoryTitle' => Halaman::KATEGORI[$kategori],
+            'categoryRoute' => $kategori,
+            'menuItems' => $menuItems->pluck('judul', 'slug'),
         ]);
     }
 }

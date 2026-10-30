@@ -9,6 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+@php
+    $menuAdmin = [
+        ['route' => 'admin.berita.index', 'aktif' => 'admin.berita.*', 'label' => 'Manajemen Berita'],
+        ['route' => 'admin.halaman.index', 'aktif' => 'admin.halaman.*', 'label' => 'Manajemen Halaman'],
+    ];
+@endphp
 <body class="h-full bg-gray-950 font-['Inter',sans-serif] text-gray-100 antialiased flex flex-col selection:bg-amber-500 selection:text-gray-900">
 
     <!-- Top Accent Bar -->
@@ -35,10 +41,12 @@
 
                     <!-- Nav Links -->
                     <nav class="hidden md:flex ml-8 space-x-1">
-                        <a href="{{ route('admin.berita.index') }}" 
-                           class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.berita.*') ? 'bg-gray-800 text-amber-400' : 'text-gray-300 hover:text-white hover:bg-gray-850' }}">
-                            Manajemen Berita
-                        </a>
+                        @foreach ($menuAdmin as $menu)
+                            <a href="{{ route($menu['route']) }}"
+                               class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs($menu['aktif']) ? 'bg-gray-800 text-amber-400' : 'text-gray-300 hover:text-white hover:bg-gray-850' }}">
+                                {{ $menu['label'] }}
+                            </a>
+                        @endforeach
                     </nav>
                 </div>
 
@@ -77,6 +85,19 @@
                 </div>
 
             </div>
+
+            <!-- Nav Links Mobile -->
+            <nav class="md:hidden flex gap-1 overflow-x-auto pb-3 -mx-1 px-1">
+                @foreach ($menuAdmin as $menu)
+                    <a href="{{ route($menu['route']) }}"
+                       class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors {{ request()->routeIs($menu['aktif']) ? 'bg-gray-800 text-amber-400' : 'text-gray-300 hover:text-white bg-gray-900' }}">
+                        {{ $menu['label'] }}
+                    </a>
+                @endforeach
+                <a href="{{ url('/') }}" target="_blank" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white">
+                    Portal Publik &nearr;
+                </a>
+            </nav>
         </div>
     </header>
 

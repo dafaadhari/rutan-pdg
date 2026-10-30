@@ -26,7 +26,7 @@ class BeritaSeeder extends Seeder
             [
                 'judul' => 'Jadwal dan Ketentuan Layanan Kunjungan Tatap Muka Terbaru Rutan Pandeglang',
                 'slug' => Str::slug('Jadwal dan Ketentuan Layanan Kunjungan Tatap Muka Terbaru Rutan Pandeglang'),
-                'konten' => '<p>Pandeglang — Rutan Kelas IIB Pandeglang mengumumkan penyesuaian jadwal layanan kunjungan tatap muka bagi keluarga warga binaan. Kunjungan dilaksanakan setiap hari Senin hingga Kamis dengan pembagian sesi pagi dan siang.</p><p>Seluruh pengunjung diimbau membawa identitas diri sah (KTP/SIM) dan mematuhi tata tertib kunjungan yang berlaku. Seluruh layanan kunjungan tidak dipungut biaya apapun (GRATIS).</p>',
+                'konten' => '<p>Pandeglang — Rutan Kelas IIB Pandeglang mengumumkan penyesuaian jadwal layanan kunjungan tatap muka bagi keluarga warga binaan. Kunjungan dilaksanakan setiap hari Senin dan Rabu dalam dua sesi (08.30–12.00 dan 13.30–14.00 WIB), serta hari Sabtu pukul 08.30–12.00 WIB.</p><p>Seluruh pengunjung diimbau membawa identitas diri sah (KTP/SIM) dan mematuhi tata tertib kunjungan yang berlaku. Seluruh layanan kunjungan tidak dipungut biaya apapun (GRATIS).</p>',
                 'gambar_sampul' => null,
                 'status' => 'publikasi',
                 'created_at' => now()->subDays(1),

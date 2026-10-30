@@ -112,7 +112,7 @@
                     Isi Konten Berita <span class="text-red-400">*</span>
                 </label>
                 <div class="mt-2">
-                    <textarea name="konten" id="konten" rows="12" required
+                    <textarea name="konten" id="konten" rows="12"
                               class="w-full px-4 py-3 bg-gray-850 border {{ $errors->has('konten') ? 'border-red-500' : 'border-gray-700' }} rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-sm leading-relaxed transition">{{ old('konten', $berita->konten) }}</textarea>
                 </div>
                 @error('konten')
@@ -135,6 +135,8 @@
     </div>
 
 </div>
+
+@include('admin.partials.tinymce', ['selector' => '#konten'])
 
 <script>
     const judulInput = document.getElementById('judul');

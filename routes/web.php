@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\HalamanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BeritaPublikController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
-use App\Models\Berita;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,24 +14,10 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    $beritas = Berita::publikasi()->latest()->get();
-    $beritaUtama = $beritas->first();
-    $beritaLainnya = $beritas->slice(1, 3); // Ambil 3 berita sampingan
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    return view('welcome', compact('beritaUtama', 'beritaLainnya'));
-})->name('home');
-
-Route::get('/berita/{slug}', function ($slug) {
-    $berita = Berita::where('slug', $slug)->publikasi()->firstOrFail();
-    $beritaTerbaru = Berita::publikasi()
-        ->where('id', '!=', $berita->id)
-        ->latest()
-        ->take(4)
-        ->get();
-
-    return view('berita.show', compact('berita', 'beritaTerbaru'));
-})->name('berita.show');
+Route::get('/berita', [BeritaPublikController::class, 'index'])->name('berita.index');
+Route::get('/berita/{slug}', [BeritaPublikController::class, 'show'])->name('berita.show');
 
 // Halaman Statis & Informasi Publik Satker
 Route::get('/tentang-kami/{slug?}', [PageController::class, 'tentangKami'])->name('tentang-kami');
@@ -62,6 +50,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Manajemen Berita (CRUD)
     Route::resource('berita', BeritaController::class)
         ->parameters(['berita' => 'berita'])
+        ->except(['show']);
+
+    // Manajemen Halaman (CRUD)
+    Route::resource('halaman', HalamanController::class)
+        ->parameters(['halaman' => 'halaman'])
         ->except(['show']);
 });
 

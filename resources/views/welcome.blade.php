@@ -1,218 +1,282 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rutan Kelas IIB Pandeglang - Kementerian Imigrasi dan Pemasyarakatan RI</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-</head>
-<body class="bg-gray-50 text-gray-800 antialiased flex flex-col min-h-screen">
+@extends('layouts.publik')
 
-    @include('partials.navbar')
+@section('konten')
+    @php
+        $fotoGedung = \App\Support\Aset::gedung();
+        $kelasEyebrow = 'inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest';
+    @endphp
 
-    <!-- HERO SECTION (TATA LETAK SPLIT) -->
-    <section class="bg-gray-900 text-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Teks Hero -->
-                <div>
-                    <div class="inline-block bg-gray-800 border border-gray-700 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-6">
+    <!-- HERO -->
+    <section class="relative overflow-hidden bg-navy-950 text-white">
+        @if($fotoGedung)
+            <img src="{{ $fotoGedung }}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-35" aria-hidden="true">
+            <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/90 to-navy-900/60" aria-hidden="true"></div>
+        @else
+            <div class="absolute inset-0 bg-gradient-to-br from-navy-900 via-navy-950 to-navy-950" aria-hidden="true"></div>
+            <div class="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:44px_44px] [mask-image:radial-gradient(ellipse_at_top_right,#000_30%,transparent_75%)]" aria-hidden="true"></div>
+            <div class="absolute -top-24 right-0 w-[520px] h-[520px] rounded-full bg-emas-500/10 blur-3xl" aria-hidden="true"></div>
+        @endif
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-28 sm:pt-20 sm:pb-32 lg:pt-24 lg:pb-36">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7">
+                    <p class="{{ $kelasEyebrow }} text-emas-300">
+                        <span class="w-6 h-px bg-emas-400"></span>
                         Portal Informasi Resmi
-                    </div>
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-6">
-                        Mewujudkan Pelayanan <span class="text-amber-400">Pemasyarakatan yang PASTI.</span>
-                    </h2>
-                    <p class="text-gray-300 text-base sm:text-lg mb-8 leading-relaxed">
-                        Kami berkomitmen memberikan pelayanan yang Profesional, Akuntabel, Sinergi, Transparan, dan Inovatif bagi Warga Binaan dan masyarakat luas.
                     </p>
-                    <a href="#layanan" class="inline-block bg-amber-500 text-gray-950 px-6 py-3 font-bold text-sm uppercase tracking-wide hover:bg-amber-400 rounded-lg shadow-lg shadow-amber-500/20 transition">
-                        Lihat Layanan Publik &rarr;
-                    </a>
-                </div>
-                <!-- Kotak Visual Hero -->
-                <div class="hidden lg:block">
-                    <div class="aspect-video bg-gray-800 border border-gray-700 rounded-2xl flex flex-col items-center justify-center shadow-2xl relative overflow-hidden p-8 text-center">
-                        <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mb-4">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
+                    <h1 class="mt-5 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.08] tracking-tight">
+                        Mewujudkan pelayanan pemasyarakatan yang <span class="text-emas-400">PASTI</span>
+                    </h1>
+                    <p class="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-navy-100">
+                        Pelayanan yang Profesional, Akuntabel, Sinergi, Transparan, dan Inovatif bagi Warga Binaan dan masyarakat luas.
+                    </p>
+                    <div class="mt-9 flex flex-wrap gap-3">
+                        <a href="#layanan"
+                           class="inline-flex items-center gap-2 rounded-lg bg-emas-500 px-6 py-3 text-sm font-bold text-navy-950 shadow-lg shadow-emas-500/20 hover:bg-emas-400 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-300 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950">
+                            Lihat Layanan <span aria-hidden="true">&rarr;</span>
+                        </a>
+                        @if($halamanPengaduan)
+                            <a href="{{ $halamanPengaduan->url }}"
+                               class="inline-flex items-center gap-2 rounded-lg border border-white/25 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 hover:border-white/40 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-300">
+                                Sampaikan Pengaduan
+                            </a>
+                        @endif
+                    </div>
+
+                    <!-- Identitas ringkas (seluler) -->
+                    <div class="mt-10 flex items-center gap-3 lg:hidden">
+                        <x-logo class="w-12 h-12" />
+                        <div class="text-sm leading-tight">
+                            <p class="font-bold">Rutan Kelas IIB Pandeglang</p>
+                            <p class="text-navy-200">WBK · WBBM · PASTI Berakhlak</p>
                         </div>
-                        <h3 class="text-lg font-bold text-white uppercase tracking-wider">Rutan Kelas IIB Pandeglang</h3>
-                        <p class="text-xs text-gray-400 mt-1 max-w-xs">Wilayah Bebas dari Korupsi (WBK) & Wilayah Birokrasi Bersih Melayani (WBBM)</p>
-                        <div class="absolute inset-0 bg-gradient-to-tr from-gray-950/60 via-transparent to-amber-500/5 pointer-events-none"></div>
+                    </div>
+                </div>
+
+                <!-- Logo & identitas (desktop) -->
+                <div class="hidden lg:block lg:col-span-5">
+                    <div class="relative rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-sm shadow-2xl">
+                        <x-logo class="w-28 h-28 mx-auto" />
+                        <p class="mt-6 text-xs font-bold uppercase tracking-widest text-emas-300">Rumah Tahanan Negara</p>
+                        <p class="mt-1 text-2xl font-extrabold">Kelas IIB Pandeglang</p>
+                        <p class="mt-2 text-sm text-navy-200">Kantor Wilayah Kementerian Imigrasi dan Pemasyarakatan Banten</p>
+                        <ul class="mt-6 flex flex-wrap justify-center gap-2 text-xs font-bold">
+                            <li class="rounded-full border border-emas-400/40 bg-emas-500/10 px-3 py-1 text-emas-200">WBK</li>
+                            <li class="rounded-full border border-emas-400/40 bg-emas-500/10 px-3 py-1 text-emas-200">WBBM</li>
+                            <li class="rounded-full border border-emas-400/40 bg-emas-500/10 px-3 py-1 text-emas-200">PASTI Berakhlak</li>
+                        </ul>
+                        <p class="mt-3 text-[11px] leading-relaxed text-navy-300">Wilayah Bebas dari Korupsi &amp; Wilayah Birokrasi Bersih Melayani</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PANEL LAYANAN PUBLIK (Ciri khas instansi) -->
-    <section id="layanan" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 -mt-10 mb-16">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 shadow-xl">
-            <div class="bg-white p-4 sm:p-6 border-t-4 border-amber-500 hover:-translate-y-1 transition duration-300 rounded-b-lg">
-                <h3 class="font-bold text-gray-900 mb-2">Jadwal Besuk</h3>
-                <p class="text-xs text-gray-500">Informasi jam kunjungan tatap muka Warga Binaan.</p>
+    <!-- HIGHLIGHT LAYANAN (dipilih admin: "Tampilkan di beranda", maks. 4) -->
+    @if($layananHighlight->isNotEmpty())
+        <section id="layanan" aria-labelledby="judul-layanan" class="relative z-10 -mt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-28">
+            <h2 id="judul-layanan" class="sr-only">Layanan utama</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach ($layananHighlight as $layanan)
+                    <a href="{{ $layanan->url }}"
+                       class="group relative flex gap-4 sm:flex-col sm:gap-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-lg shadow-navy-950/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-navy-950/10 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 focus-visible:ring-offset-2">
+                        <span class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-emas-500 transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true"></span>
+                        <span class="flex w-12 h-12 shrink-0 items-center justify-center rounded-xl bg-navy-900 text-emas-400 group-hover:bg-navy-800 transition">
+                            <x-ikon :nama="$layanan->ikon" class="w-6 h-6" />
+                        </span>
+                        <span class="flex min-w-0 flex-1 flex-col sm:mt-5">
+                            <span class="text-base font-bold text-navy-950">{{ $layanan->judul }}</span>
+                            <span class="mt-1.5 text-sm leading-relaxed text-gray-600 line-clamp-2">{{ $layanan->ringkasan }}</span>
+                            <span class="mt-auto pt-4 text-sm font-semibold text-emas-700">
+                                Selengkapnya <span class="inline-block transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+                            </span>
+                        </span>
+                    </a>
+                @endforeach
             </div>
-            <div class="bg-white p-4 sm:p-6 border-t-4 border-gray-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
-                <h3 class="font-bold text-gray-900 mb-2">Titipan Barang</h3>
-                <p class="text-xs text-gray-500">SOP dan syarat penitipan barang & makanan.</p>
+            <div class="mt-4 flex justify-end">
+                <a href="{{ route('layanan') }}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4 focus:outline-none focus-visible:underline">
+                    Lihat semua layanan <span aria-hidden="true">&rarr;</span>
+                </a>
             </div>
-            <div class="bg-white p-4 sm:p-6 border-t-4 border-blue-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
-                <h3 class="font-bold text-gray-900 mb-2">Program Integrasi</h3>
-                <p class="text-xs text-gray-500">Layanan pengurusan PB, CB, dan CMB resmi.</p>
-            </div>
-            <div class="bg-white p-4 sm:p-6 border-t-4 border-red-700 hover:-translate-y-1 transition duration-300 rounded-b-lg">
-                <h3 class="font-bold text-gray-900 mb-2">Pengaduan</h3>
-                <p class="text-xs text-gray-500">Saluran aspirasi dan pengaduan langsung masyarakat.</p>
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
-    <!-- SEKSI PUBLIKASI & BERITA (Layout Side-by-Side Dinamis) -->
-    <main id="berita" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
+    <!-- BERITA TERKINI -->
+    <section id="berita" aria-labelledby="judul-berita" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-28">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
             <div>
-                <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900 uppercase tracking-wide">Giat & Informasi Terkini</h3>
-                <p class="text-xs text-gray-500 mt-1">Publikasi resmi transparansi kegiatan dan pembinaan warga binaan.</p>
+                <p class="{{ $kelasEyebrow }} text-emas-700">
+                    <span class="w-6 h-px bg-emas-500"></span>
+                    Berita & Kegiatan
+                </p>
+                <h2 id="judul-berita" class="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-navy-950">Giat & informasi terkini</h2>
+                <p class="mt-1 text-sm text-gray-600">Publikasi resmi kegiatan dan pembinaan Warga Binaan.</p>
             </div>
+            <a href="{{ route('berita.index') }}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4 focus:outline-none focus-visible:underline">
+                Lihat semua berita <span aria-hidden="true">&rarr;</span>
+            </a>
         </div>
 
         @if($beritaUtama)
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
-                <!-- Berita Utama (Sorotan) - Memakan 2 kolom -->
-                <article class="lg:col-span-2 group">
-                    <a href="{{ route('berita.show', $beritaUtama->slug) }}" class="block">
-                        <div class="aspect-video bg-gray-900 rounded-2xl w-full relative overflow-hidden mb-4 shadow-lg border border-gray-200">
-                            @if($beritaUtama->gambar_sampul)
-                                <img src="{{ asset('storage/' . $beritaUtama->gambar_sampul) }}" 
-                                     alt="{{ $beritaUtama->judul }}"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            @else
-                                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-gray-950 text-gray-400 p-6 text-center">
-                                    <svg class="w-12 h-12 text-amber-400/80 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                                    </svg>
-                                    <span class="text-xs font-semibold uppercase tracking-widest text-gray-300">Rilis Humas Rutan Pandeglang</span>
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="text-xs font-bold text-amber-600 uppercase tracking-widest mb-2 flex items-center gap-2">
-                            <span>Humas Rutan</span>
-                            <span>&bull;</span>
-                            <span>{{ $beritaUtama->created_at->translatedFormat('d F Y') }}</span>
-                        </div>
-
-                        <h4 class="text-xl sm:text-2xl font-extrabold text-gray-900 group-hover:text-amber-600 transition leading-snug mb-3">
-                            {{ $beritaUtama->judul }}
-                        </h4>
-
-                        <p class="text-gray-600 leading-relaxed line-clamp-3 text-sm">
-                            {{ Str::limit(strip_tags($beritaUtama->konten), 220) }}
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10">
+                <!-- Berita utama -->
+                <article class="group lg:col-span-3">
+                    <a href="{{ route('berita.show', $beritaUtama->slug) }}" class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 rounded-2xl">
+                        <x-sampul-berita :berita="$beritaUtama" class="aspect-[2/1] rounded-2xl shadow-md" />
+                        <p class="mt-5 text-sm font-semibold text-emas-700">
+                            <time datetime="{{ $beritaUtama->created_at->toDateString() }}">{{ $beritaUtama->created_at->translatedFormat('l, d F Y') }}</time>
                         </p>
-
-                        <div class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-gray-900 group-hover:text-amber-600 uppercase tracking-wider">
-                            Baca Selengkapnya &rarr;
-                        </div>
+                        <h3 class="mt-2 text-xl sm:text-2xl font-bold leading-snug text-navy-950 group-hover:text-navy-700 transition">
+                            {{ $beritaUtama->judul }}
+                        </h3>
+                        <p class="mt-3 text-[15px] leading-relaxed text-gray-600 line-clamp-3">
+                            {{ Str::limit(strip_tags($beritaUtama->konten), 240) }}
+                        </p>
+                        <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-navy-800 group-hover:text-navy-950">
+                            Baca selengkapnya <span class="inline-block transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+                        </span>
                     </a>
                 </article>
 
-                <!-- List Berita Samping (3 Artikel Lainnya) -->
-                <div class="flex flex-col gap-6 lg:border-l border-gray-200 lg:pl-8">
-                    @forelse ($beritaLainnya as $item)
-                        <article class="group">
-                            <a href="{{ route('berita.show', $item->slug) }}" class="block">
-                                <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
-                                    {{ $item->created_at->translatedFormat('d F Y') }}
-                                </div>
-                                <h5 class="font-bold text-gray-900 group-hover:text-amber-600 transition leading-tight mb-2 line-clamp-2">
-                                    {{ $item->judul }}
-                                </h5>
-                                <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
-                                    {{ Str::limit(strip_tags($item->konten), 110) }}
-                                </p>
-                            </a>
-                        </article>
-
-                        @if(!$loop->last)
-                            <div class="w-full h-px bg-gray-200"></div>
-                        @endif
-                    @empty
-                        <div class="py-8 text-center text-gray-400 text-xs">
-                            Tidak ada berita sampingan lainnya saat ini.
-                        </div>
-                    @endforelse
+                <!-- Berita lainnya -->
+                <div class="lg:col-span-2">
+                    @if($beritaLainnya->isNotEmpty())
+                        <ul class="divide-y divide-gray-200 border-y border-gray-200">
+                            @foreach ($beritaLainnya as $item)
+                                <li>
+                                    <a href="{{ route('berita.show', $item->slug) }}" class="group flex gap-4 py-4 focus:outline-none focus-visible:bg-navy-50">
+                                        <x-sampul-berita :berita="$item" ukuran="kecil" class="w-28 h-20 sm:w-32 sm:h-24 shrink-0 rounded-xl" />
+                                        <div class="min-w-0">
+                                            <time datetime="{{ $item->created_at->toDateString() }}" class="text-xs font-medium text-gray-500">{{ $item->created_at->translatedFormat('d F Y') }}</time>
+                                            <h3 class="mt-1 text-[15px] font-semibold leading-snug text-navy-950 group-hover:text-navy-700 line-clamp-3">{{ $item->judul }}</h3>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="py-8 text-center text-sm text-gray-500">Belum ada berita lainnya.</p>
+                    @endif
                 </div>
-
             </div>
         @else
-            <!-- Empty State jika belum ada berita -->
-            <div class="bg-white rounded-2xl border border-gray-200 p-12 text-center shadow-sm">
-                <div class="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                    </svg>
-                </div>
-                <h4 class="text-base font-bold text-gray-900">Belum Ada Berita Diterbitkan</h4>
-                <p class="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
-                    Berita dan pengumuman resmi giat Rutan Pandeglang akan segera dipublikasikan di sini.
-                </p>
+            <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center">
+                <x-ikon nama="dokumen" class="w-10 h-10 mx-auto text-navy-300" />
+                <h3 class="mt-4 text-base font-bold text-navy-950">Belum ada berita diterbitkan</h3>
+                <p class="mt-1 text-sm text-gray-600">Berita dan pengumuman resmi Rutan Pandeglang akan tampil di sini.</p>
             </div>
         @endif
-    </main>
+    </section>
 
-    <!-- FOOTER RESMI -->
-    <footer id="kontak" class="bg-gray-900 text-gray-400 py-12 mt-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="md:col-span-1">
-                <h4 class="text-white font-extrabold text-lg mb-4 uppercase tracking-wider flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                    Rutan Pandeglang
-                </h4>
-                <p class="text-sm leading-relaxed mb-4 text-gray-400">
-                    Unit Pelaksana Teknis Pemasyarakatan di bawah naungan Kantor Wilayah Kementerian Imigrasi dan Pemasyarakatan Banten.
-                </p>
-            </div>
-            
-            <div>
-                <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-widest">Informasi Kontak</h4>
-                <ul class="text-sm space-y-2 text-gray-400">
-                    <li>Jl. Raya Pandeglang - Serang</li>
-                    <li>Pandeglang, Banten, Indonesia</li>
-                    <li class="mt-4">Email: info@rutanpandeglang.go.id</li>
-                    <li>Telp: (0253) 201234</li>
-                </ul>
-            </div>
-            
-            <div>
-                <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-widest">Jam Layanan</h4>
-                <ul class="text-sm space-y-2 text-gray-400">
-                    <li>Senin: 08.00 - 14.00 WIB</li>
-                    <li>Rabu: 08.00 - 14.00 WIB</li>
-                    <li>Sabtu: 08.00 - 12.00 WIB</li>
-                    <li>Minggu & Hari Libur: Tutup</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left text-xs">
-            <p>&copy; {{ date('Y') }} Rutan Kelas IIB Pandeglang. Hak Cipta Dilindungi.</p>
-            <div class="mt-3 md:mt-0 flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
-                <span class="uppercase tracking-widest text-gray-500 font-semibold">Sistem Informasi Publik</span>
-                <span class="text-gray-700">&bull;</span>
-                <a href="{{ route('login') }}" class="text-gray-500 hover:text-amber-400 transition-colors font-medium">
-                    Akses Admin
+    <!-- HIGHLIGHT INFORMASI PUBLIK (dipilih admin, maks. 4) -->
+    @if($informasiHighlight->isNotEmpty())
+        <section id="informasi-publik" aria-labelledby="judul-informasi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 scroll-mt-28">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
+                <div>
+                    <p class="{{ $kelasEyebrow }} text-emas-700">
+                        <span class="w-6 h-px bg-emas-500"></span>
+                        Transparansi
+                    </p>
+                    <h2 id="judul-informasi" class="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-navy-950">Informasi publik</h2>
+                    <p class="mt-1 text-sm text-gray-600">Dokumen perencanaan, kinerja, dan anggaran Rutan Kelas IIB Pandeglang.</p>
+                </div>
+                <a href="{{ route('informasi-publik') }}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4 focus:outline-none focus-visible:underline">
+                    Semua dokumen <span aria-hidden="true">&rarr;</span>
                 </a>
             </div>
-        </div>
-    </footer>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 border-t border-gray-200">
+                @foreach ($informasiHighlight as $info)
+                    <li class="border-b border-gray-200">
+                        <a href="{{ $info->url }}" class="group flex gap-3 py-5 focus:outline-none focus-visible:bg-navy-50">
+                            <span class="flex w-10 h-10 shrink-0 items-center justify-center rounded-lg bg-emas-50 text-emas-700 group-hover:bg-emas-100 transition">
+                                <x-ikon :nama="$info->ikon" class="w-5 h-5" />
+                            </span>
+                            <span class="min-w-0">
+                                <span class="block text-[15px] font-bold text-navy-950 group-hover:text-navy-700">{{ $info->judul }}</span>
+                                @if($info->ringkasan)
+                                    <span class="mt-1 block text-sm leading-relaxed text-gray-600 line-clamp-2">{{ $info->ringkasan }}</span>
+                                @endif
+                            </span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
 
-</body>
-</html>
+    <!-- MAKLUMAT PELAYANAN & SALURAN PENGADUAN -->
+    <section id="maklumat" aria-labelledby="judul-maklumat" class="bg-white border-t border-gray-200 scroll-mt-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+
+            <!-- Maklumat -->
+            <figure class="lg:col-span-7">
+                <h2 id="judul-maklumat" class="{{ $kelasEyebrow }} text-emas-700">
+                    <span class="w-6 h-px bg-emas-500"></span>
+                    Maklumat Pelayanan
+                </h2>
+                <blockquote class="mt-6 border-l-4 border-emas-500 pl-6">
+                    <p class="text-xl sm:text-2xl font-semibold leading-snug tracking-tight text-navy-950">
+                        &ldquo;{{ $maklumat['isi'] }}&rdquo;
+                    </p>
+                </blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 pl-7">
+                    <x-logo class="w-10 h-10" />
+                    <span class="text-sm font-semibold text-gray-700">{{ $maklumat['penanda_tangan'] }}</span>
+                </figcaption>
+                <ul class="mt-8 flex flex-wrap gap-2 pl-7">
+                    @foreach ($maklumat['komitmen'] as $komitmen)
+                        <li class="inline-flex items-center gap-1.5 rounded-full bg-navy-950 px-3.5 py-1.5 text-xs font-bold text-white">
+                            <svg class="w-3.5 h-3.5 text-emas-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            {{ $komitmen }}
+                        </li>
+                    @endforeach
+                </ul>
+            </figure>
+
+            <!-- Saluran pengaduan -->
+            <div class="lg:col-span-5">
+                <p class="{{ $kelasEyebrow }} text-red-700">
+                    <span class="w-6 h-px bg-red-500"></span>
+                    Saluran Pengaduan
+                </p>
+                <h3 class="mt-2 text-2xl font-extrabold tracking-tight text-navy-950">Temukan pelanggaran? Laporkan.</h3>
+                <p class="mt-1 text-sm text-gray-600">Pungutan liar, gratifikasi, atau pelayanan yang tidak sesuai standar.</p>
+
+                <ul class="mt-6 divide-y divide-gray-200 border-y border-gray-200">
+                    @foreach ($saluranPengaduan as $kanal)
+                        <li>
+                            @if($kanal['url'])
+                                <a href="{{ $kanal['url'] }}" @if($kanal['luar']) target="_blank" rel="noopener" @endif
+                                   class="group flex items-center gap-4 py-4 focus:outline-none focus-visible:bg-navy-50">
+                                    <span class="flex w-10 h-10 shrink-0 items-center justify-center rounded-lg bg-navy-950 text-emas-400">
+                                        <x-ikon :nama="$kanal['ikon']" class="w-5 h-5" />
+                                    </span>
+                                    <span class="min-w-0 flex-1">
+                                        <span class="block text-[15px] font-bold text-navy-950 group-hover:text-navy-700">{{ $kanal['judul'] }}</span>
+                                        <span class="block text-sm text-gray-600">{{ $kanal['ket'] }}</span>
+                                    </span>
+                                    <span class="text-gray-300 group-hover:text-navy-900 transition" aria-hidden="true">{!! $kanal['luar'] ? '&nearr;' : '&rarr;' !!}</span>
+                                </a>
+                            @else
+                                <div class="flex items-center gap-4 py-4">
+                                    <span class="flex w-10 h-10 shrink-0 items-center justify-center rounded-lg bg-navy-950 text-emas-400">
+                                        <x-ikon :nama="$kanal['ikon']" class="w-5 h-5" />
+                                    </span>
+                                    <span class="min-w-0 flex-1">
+                                        <span class="block text-[15px] font-bold text-navy-950">{{ $kanal['judul'] }}</span>
+                                        <span class="block text-sm text-gray-600">{{ $kanal['ket'] }}</span>
+                                    </span>
+                                </div>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+                <p class="mt-4 flex items-center gap-2 text-xs text-gray-500">
+                    <x-ikon nama="perisai" class="w-4 h-4 text-emas-600" />
+                    Identitas pelapor dijamin kerahasiaannya.
+                </p>
+            </div>
+        </div>
+    </section>
+@endsection
