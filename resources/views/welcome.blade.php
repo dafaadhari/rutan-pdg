@@ -9,8 +9,9 @@
     <!-- HERO -->
     <section class="relative overflow-hidden bg-navy-950 text-white">
         @if($fotoGedung)
-            <img src="{{ $fotoGedung }}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-35" aria-hidden="true">
-            <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/90 to-navy-900/60" aria-hidden="true"></div>
+            <img src="{{ $fotoGedung }}" alt="" class="absolute inset-0 w-full h-full object-cover object-[center_35%] opacity-60" aria-hidden="true">
+            <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-950/35" aria-hidden="true"></div>
+            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-navy-950/80 to-transparent" aria-hidden="true"></div>
         @else
             <div class="absolute inset-0 bg-gradient-to-br from-navy-900 via-navy-950 to-navy-950" aria-hidden="true"></div>
             <div class="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:44px_44px] [mask-image:radial-gradient(ellipse_at_top_right,#000_30%,transparent_75%)]" aria-hidden="true"></div>
@@ -47,7 +48,7 @@
                     <div class="mt-10 flex items-center gap-3 lg:hidden">
                         <x-logo class="w-12 h-12" />
                         <div class="text-sm leading-tight">
-                            <p class="font-bold">Rutan Kelas IIB Pandeglang</p>
+                            <p class="font-bold">Zona Integritas</p>
                             <p class="text-navy-200">WBK · WBBM · PASTI Berakhlak</p>
                         </div>
                     </div>
@@ -55,17 +56,15 @@
 
                 <!-- Logo & identitas (desktop) -->
                 <div class="hidden lg:block lg:col-span-5">
-                    <div class="relative rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-sm shadow-2xl">
-                        <x-logo class="w-28 h-28 mx-auto" />
-                        <p class="mt-6 text-xs font-bold uppercase tracking-widest text-emas-300">Rumah Tahanan Negara</p>
-                        <p class="mt-1 text-2xl font-extrabold">Kelas IIB Pandeglang</p>
-                        <p class="mt-2 text-sm text-navy-200">Kantor Wilayah Kementerian Imigrasi dan Pemasyarakatan Banten</p>
+                    <div class="relative rounded-3xl border border-white/15 bg-navy-950/55 p-10 text-center backdrop-blur-md shadow-2xl">
+                        <x-logo class="w-36 h-36 mx-auto drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)]" />
+                        <p class="mt-6 text-xs font-bold uppercase tracking-widest text-emas-300">Zona Integritas</p>
+                        <p class="mt-2 text-xl font-extrabold leading-snug">Wilayah Bebas dari Korupsi &amp;<br>Wilayah Birokrasi Bersih Melayani</p>
                         <ul class="mt-6 flex flex-wrap justify-center gap-2 text-xs font-bold">
                             <li class="rounded-full border border-emas-400/40 bg-emas-500/10 px-3 py-1 text-emas-200">WBK</li>
                             <li class="rounded-full border border-emas-400/40 bg-emas-500/10 px-3 py-1 text-emas-200">WBBM</li>
                             <li class="rounded-full border border-emas-400/40 bg-emas-500/10 px-3 py-1 text-emas-200">PASTI Berakhlak</li>
                         </ul>
-                        <p class="mt-3 text-[11px] leading-relaxed text-navy-300">Wilayah Bebas dari Korupsi &amp; Wilayah Birokrasi Bersih Melayani</p>
                     </div>
                 </div>
             </div>

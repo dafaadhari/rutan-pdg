@@ -81,7 +81,7 @@ return [
     'tautan_instansi' => [
         ['nama' => 'Kementerian Imigrasi dan Pemasyarakatan', 'url' => 'https://www.kemenimipas.go.id'],
         ['nama' => 'Direktorat Jenderal Pemasyarakatan', 'url' => 'https://www.ditjenpas.go.id'],
-        ['nama' => 'Kanwil Kemenimipas Banten', 'url' => null],
+        ['nama' => 'Kanwil Ditjen Pemasyarakatan Banten', 'url' => null],
         ['nama' => 'SP4N-LAPOR!', 'url' => 'https://www.lapor.go.id'],
         // Belum terverifikasi dari server (situs tidak merespons pemeriksaan otomatis)
         ['nama' => 'Ombudsman RI', 'url' => null],

@@ -76,20 +76,27 @@ it('menyembunyikan detail berita draft', function () {
 });
 
 it('memakai logo.png bila tersedia, selain itu emblem cadangan', function () {
-    $path = public_path('images/logo.png');
-    expect(is_file($path))->toBeFalse();
-
-    $this->get('/berita')->assertOk()
-        ->assertSee('role="img" aria-label="Logo Rutan Kelas IIB Pandeglang"', false)
-        ->assertDontSee('images/logo.png');
+    // Pakai folder public sementara agar logo asli di public/images tidak pernah tersentuh
+    $publikAsli = public_path();
+    $publikUji = storage_path('framework/testing/public-' . uniqid());
+    mkdir($publikUji . '/images', 0777, true);
+    app()->usePublicPath($publikUji);
+    $this->withoutVite();
 
     try {
-        file_put_contents($path, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='));
+        $this->get('/berita')->assertOk()
+            ->assertSee('role="img" aria-label="Logo Rutan Kelas IIB Pandeglang"', false)
+            ->assertDontSee('images/logo.png');
+
+        file_put_contents($publikUji . '/images/logo.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='));
 
         $this->get('/berita')->assertOk()
             ->assertSee('<img src="' . asset('images/logo.png') . '" alt="Logo Rutan Kelas IIB Pandeglang"', false)
             ->assertSee('<meta property="og:image" content="' . asset('images/logo.png') . '">', false);
     } finally {
-        @unlink($path);
+        app()->usePublicPath($publikAsli);
+        @unlink($publikUji . '/images/logo.png');
+        @rmdir($publikUji . '/images');
+        @rmdir($publikUji);
     }
 });

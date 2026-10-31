@@ -29,18 +29,13 @@
             <div class="flex items-center gap-3">
                 <x-logo class="w-12 h-12" />
                 <div class="leading-tight">
-                    <p class="text-xs text-navy-300">Kemenimipas Republik Indonesia</p>
+                    <p class="text-xs text-navy-300">Kantor Wilayah Ditjen Pemasyarakatan Banten</p>
                     <p class="text-lg font-extrabold text-white">Rutan Kelas IIB Pandeglang</p>
                 </div>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-navy-200 max-w-sm">
-                Unit Pelaksana Teknis Pemasyarakatan di bawah naungan Kantor Wilayah Kementerian Imigrasi dan Pemasyarakatan Banten.
+                Unit Pelaksana Teknis Pemasyarakatan di bawah Kantor Wilayah Direktorat Jenderal Pemasyarakatan Banten, Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia.
             </p>
-            <ul class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold">
-                <li class="px-2.5 py-1 rounded-full border border-emas-500/40 text-emas-300">WBK</li>
-                <li class="px-2.5 py-1 rounded-full border border-emas-500/40 text-emas-300">WBBM</li>
-                <li class="px-2.5 py-1 rounded-full border border-emas-500/40 text-emas-300">PASTI Berakhlak</li>
-            </ul>
             @if($sosial)
                 <ul class="mt-5 flex gap-2">
                     @foreach ($sosial as $kunci => $url)

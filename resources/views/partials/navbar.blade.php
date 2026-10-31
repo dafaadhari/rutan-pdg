@@ -39,7 +39,7 @@
             <a href="{{ route('home') }}" class="flex items-center gap-3 min-w-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 rounded-lg">
                 <x-logo class="w-11 h-11 lg:w-12 lg:h-12 group-hover:scale-[1.03] transition-transform" />
                 <span class="min-w-0 leading-tight">
-                    <span class="block text-[11px] sm:text-xs font-semibold text-gray-500 truncate">Kemenimipas Republik Indonesia</span>
+                    <span class="block text-[11px] sm:text-xs font-semibold text-gray-500 truncate"><span class="sm:hidden">Kanwil Ditjenpas Banten</span><span class="hidden sm:inline">Kantor Wilayah Ditjen Pemasyarakatan Banten</span></span>
                     <span class="block text-[15px] sm:text-lg font-extrabold text-navy-950 tracking-tight truncate">Rutan Kelas IIB Pandeglang</span>
                 </span>
             </a>
