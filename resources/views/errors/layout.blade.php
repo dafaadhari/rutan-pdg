@@ -39,7 +39,7 @@
             <div class="mt-9 flex flex-wrap gap-3">
                 <a href="{{ url('/') }}"
                    class="inline-flex items-center gap-2 rounded-lg bg-emas-500 px-6 py-3 text-sm font-bold text-navy-950 hover:bg-emas-400 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-300 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950">
-                    <span aria-hidden="true">&larr;</span> Kembali ke beranda
+                    <span aria-hidden="true"><x-panah arah="kiri" /></span> Kembali ke beranda
                 </a>
                 @yield('aksi')
             </div>

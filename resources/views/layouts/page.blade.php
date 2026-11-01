@@ -21,7 +21,6 @@
             </nav>
 
             <p class="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emas-300">
-                <span class="w-6 h-px bg-emas-400"></span>
                 {{ $categoryTitle }}
             </p>
             <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight break-words">{{ $pageTitle }}</h1>

@@ -60,7 +60,7 @@
                 @foreach ($layananFooter as $layanan)
                     <li><a href="{{ route('layanan', $layanan->slug) }}" class="{{ $kelasTautan }}">{{ $layanan->judul }}</a></li>
                 @endforeach
-                <li><a href="{{ route('layanan') }}" class="{{ $kelasTautan }} font-semibold text-white">Semua layanan &rarr;</a></li>
+                <li><a href="{{ route('layanan') }}" class="{{ $kelasTautan }} font-semibold text-white">Semua layanan <x-panah /></a></li>
             </ul>
         </div>
 
@@ -124,7 +124,7 @@
                         <li>
                             <a href="{{ $tautan['url'] }}" target="_blank" rel="noopener"
                                class="inline-flex items-center gap-1 text-sm text-navy-200 hover:text-white transition focus:outline-none focus-visible:underline">
-                                {{ $tautan['nama'] }} <span class="text-navy-400" aria-hidden="true">&nearr;</span>
+                                {{ $tautan['nama'] }} <span class="text-navy-400" aria-hidden="true"><x-panah arah="serong" /></span>
                             </a>
                         </li>
                     @endforeach

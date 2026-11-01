@@ -22,7 +22,6 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 <div class="lg:col-span-7">
                     <p class="{{ $kelasEyebrow }} text-emas-300">
-                        <span class="w-6 h-px bg-emas-400"></span>
                         Portal Informasi Resmi
                     </p>
                     <h1 class="mt-5 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.08] tracking-tight">
@@ -34,7 +33,7 @@
                     <div class="mt-9 flex flex-wrap gap-3">
                         <a href="#layanan"
                            class="inline-flex items-center gap-2 rounded-lg bg-emas-500 px-6 py-3 text-sm font-bold text-navy-950 shadow-lg shadow-emas-500/20 hover:bg-emas-400 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-300 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950">
-                            Lihat Layanan <span aria-hidden="true">&rarr;</span>
+                            Lihat Layanan <span aria-hidden="true"><x-panah /></span>
                         </a>
                         @if($halamanPengaduan)
                             <a href="{{ $halamanPengaduan->url }}"
@@ -87,7 +86,7 @@
                             <span class="text-base font-bold text-navy-950">{{ $layanan->judul }}</span>
                             <span class="mt-1.5 text-sm leading-relaxed text-gray-600 line-clamp-2">{{ $layanan->ringkasan }}</span>
                             <span class="mt-auto pt-4 text-sm font-semibold text-emas-700">
-                                Selengkapnya <span class="inline-block transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+                                Selengkapnya <span class="inline-block transition-transform group-hover:translate-x-1" aria-hidden="true"><x-panah /></span>
                             </span>
                         </span>
                     </a>
@@ -95,7 +94,7 @@
             </div>
             <div class="mt-4 flex justify-end">
                 <a href="{{ route('layanan') }}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4 focus:outline-none focus-visible:underline">
-                    Lihat semua layanan <span aria-hidden="true">&rarr;</span>
+                    Lihat semua layanan <span aria-hidden="true"><x-panah /></span>
                 </a>
             </div>
         </section>
@@ -106,14 +105,13 @@
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
             <div>
                 <p class="{{ $kelasEyebrow }} text-emas-700">
-                    <span class="w-6 h-px bg-emas-500"></span>
                     Berita & Kegiatan
                 </p>
                 <h2 id="judul-berita" class="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-navy-950">Giat & informasi terkini</h2>
                 <p class="mt-1 text-sm text-gray-600">Publikasi resmi kegiatan dan pembinaan Warga Binaan.</p>
             </div>
             <a href="{{ route('berita.index') }}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4 focus:outline-none focus-visible:underline">
-                Lihat semua berita <span aria-hidden="true">&rarr;</span>
+                Lihat semua berita <span aria-hidden="true"><x-panah /></span>
             </a>
         </div>
 
@@ -124,7 +122,9 @@
                     <a href="{{ route('berita.show', $beritaUtama->slug) }}" class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 rounded-2xl">
                         <x-sampul-berita :berita="$beritaUtama" class="aspect-[2/1] rounded-2xl shadow-md" />
                         <p class="mt-5 text-sm font-semibold text-emas-700">
-                            <time datetime="{{ $beritaUtama->created_at->toDateString() }}">{{ $beritaUtama->created_at->translatedFormat('l, d F Y') }}</time>
+                            <span class="font-bold">{{ $beritaUtama->kategori_label }}</span>
+                            <span class="mx-1.5 text-gray-300" aria-hidden="true">•</span>
+                            <time datetime="{{ $beritaUtama->created_at->toDateString() }}" class="font-medium text-gray-500">{{ $beritaUtama->created_at->translatedFormat('l, d F Y') }}</time>
                         </p>
                         <h3 class="mt-2 text-xl sm:text-2xl font-bold leading-snug text-navy-950 group-hover:text-navy-700 transition">
                             {{ $beritaUtama->judul }}
@@ -133,7 +133,7 @@
                             {{ Str::limit(strip_tags($beritaUtama->konten), 240) }}
                         </p>
                         <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-navy-800 group-hover:text-navy-950">
-                            Baca selengkapnya <span class="inline-block transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+                            Baca selengkapnya <span class="inline-block transition-transform group-hover:translate-x-1" aria-hidden="true"><x-panah /></span>
                         </span>
                     </a>
                 </article>
@@ -147,7 +147,7 @@
                                     <a href="{{ route('berita.show', $item->slug) }}" class="group flex gap-4 py-4 focus:outline-none focus-visible:bg-navy-50">
                                         <x-sampul-berita :berita="$item" ukuran="kecil" class="w-28 h-20 sm:w-32 sm:h-24 shrink-0 rounded-xl" />
                                         <div class="min-w-0">
-                                            <time datetime="{{ $item->created_at->toDateString() }}" class="text-xs font-medium text-gray-500">{{ $item->created_at->translatedFormat('d F Y') }}</time>
+                                            <p class="text-xs text-gray-500"><span class="font-bold text-emas-700">{{ $item->kategori_label }}</span> · <time datetime="{{ $item->created_at->toDateString() }}">{{ $item->created_at->translatedFormat('d F Y') }}</time></p>
                                             <h3 class="mt-1 text-[15px] font-semibold leading-snug text-navy-950 group-hover:text-navy-700 line-clamp-3">{{ $item->judul }}</h3>
                                         </div>
                                     </a>
@@ -168,20 +168,66 @@
         @endif
     </section>
 
+    <!-- SAMBUTAN KEPALA RUTAN (diatur admin: menu Sambutan Pimpinan) -->
+    @if($sambutan['tampil'] && $sambutan['isi'])
+        <section id="sambutan" aria-labelledby="judul-sambutan" class="bg-white border-y border-gray-200 scroll-mt-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+                <!-- Foto -->
+                <div class="lg:col-span-4">
+                    <div class="relative mx-auto max-w-xs lg:max-w-none">
+                        <div class="absolute -bottom-3 -right-3 h-full w-full rounded-2xl border-2 border-emas-400" aria-hidden="true"></div>
+                        <div class="relative aspect-[4/5] overflow-hidden rounded-2xl bg-navy-950 shadow-xl">
+                            @if($sambutan['foto'])
+                                <img src="{{ asset('storage/' . $sambutan['foto']) }}" alt="Foto {{ $sambutan['nama'] }}" class="h-full w-full object-cover" loading="lazy">
+                            @else
+                                <div class="absolute inset-0 bg-gradient-to-br from-navy-800 to-navy-950" aria-hidden="true"></div>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-navy-300">
+                                    <x-ikon nama="pengguna" class="w-20 h-20" />
+                                    <x-logo class="w-12 h-12 opacity-80" />
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teks -->
+                <div class="lg:col-span-8">
+                    <p class="{{ $kelasEyebrow }} text-emas-700">
+                        Sambutan Kepala Rutan
+                    </p>
+                    <h2 id="judul-sambutan" class="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-navy-950">
+                        &ldquo;{{ $sambutan['judul'] }}&rdquo;
+                    </h2>
+                    <div class="mt-6 space-y-4 text-[15px] leading-relaxed text-gray-700">
+                        @foreach (preg_split('/\R\s*\R/', trim($sambutan['isi'])) as $paragraf)
+                            <p>{{ $paragraf }}</p>
+                        @endforeach
+                    </div>
+                    <div class="mt-8 flex items-center gap-4 border-t border-gray-200 pt-6">
+                        <span class="h-10 w-1 rounded-full bg-emas-500" aria-hidden="true"></span>
+                        <div>
+                            <p class="text-base font-bold text-navy-950">{{ $sambutan['nama'] }}</p>
+                            <p class="text-sm text-gray-600">{{ $sambutan['jabatan'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- HIGHLIGHT INFORMASI PUBLIK (dipilih admin, maks. 4) -->
     @if($informasiHighlight->isNotEmpty())
-        <section id="informasi-publik" aria-labelledby="judul-informasi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 scroll-mt-28">
+        <section id="informasi-publik" aria-labelledby="judul-informasi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-28">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
                 <div>
                     <p class="{{ $kelasEyebrow }} text-emas-700">
-                        <span class="w-6 h-px bg-emas-500"></span>
                         Transparansi
                     </p>
                     <h2 id="judul-informasi" class="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-navy-950">Informasi publik</h2>
                     <p class="mt-1 text-sm text-gray-600">Dokumen perencanaan, kinerja, dan anggaran Rutan Kelas IIB Pandeglang.</p>
                 </div>
                 <a href="{{ route('informasi-publik') }}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4 focus:outline-none focus-visible:underline">
-                    Semua dokumen <span aria-hidden="true">&rarr;</span>
+                    Semua dokumen <span aria-hidden="true"><x-panah /></span>
                 </a>
             </div>
             <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 border-t border-gray-200">
@@ -211,7 +257,6 @@
             <!-- Maklumat -->
             <figure class="lg:col-span-7">
                 <h2 id="judul-maklumat" class="{{ $kelasEyebrow }} text-emas-700">
-                    <span class="w-6 h-px bg-emas-500"></span>
                     Maklumat Pelayanan
                 </h2>
                 <blockquote class="mt-6 border-l-4 border-emas-500 pl-6">
@@ -236,7 +281,6 @@
             <!-- Saluran pengaduan -->
             <div class="lg:col-span-5">
                 <p class="{{ $kelasEyebrow }} text-red-700">
-                    <span class="w-6 h-px bg-red-500"></span>
                     Saluran Pengaduan
                 </p>
                 <h3 class="mt-2 text-2xl font-extrabold tracking-tight text-navy-950">Temukan pelanggaran? Laporkan.</h3>
@@ -255,7 +299,7 @@
                                         <span class="block text-[15px] font-bold text-navy-950 group-hover:text-navy-700">{{ $kanal['judul'] }}</span>
                                         <span class="block text-sm text-gray-600">{{ $kanal['ket'] }}</span>
                                     </span>
-                                    <span class="text-gray-300 group-hover:text-navy-900 transition" aria-hidden="true">{!! $kanal['luar'] ? '&nearr;' : '&rarr;' !!}</span>
+                                    <x-panah :arah="$kanal['luar'] ? 'serong' : 'kanan'" class="h-4 w-4 text-gray-300 group-hover:text-navy-900 transition" />
                                 </a>
                             @else
                                 <div class="flex items-center gap-4 py-4">

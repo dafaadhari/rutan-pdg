@@ -11,7 +11,6 @@
 <div class="bg-navy-950 text-navy-200 text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between gap-4">
         <span class="flex items-center gap-2 min-w-0">
-            <span class="w-1.5 h-1.5 rounded-full bg-emas-400 shrink-0"></span>
             <span class="truncate">Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia</span>
         </span>
         <div class="hidden md:flex items-center gap-5 shrink-0">
@@ -71,10 +70,9 @@
                                         @php $aktif = request()->routeIs($kategori) && $slugAktif === $item->slug; @endphp
                                         <li>
                                             <a href="{{ route($kategori, $item->slug) }}" @if($aktif) aria-current="page" @endif
-                                               class="group/item flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm leading-snug transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 {{ $aktif ? 'bg-navy-50 font-semibold text-navy-950' : 'text-gray-700 hover:bg-gray-50 hover:text-navy-950' }}">
-                                                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md transition {{ $aktif ? 'bg-navy-900 text-emas-400' : 'bg-gray-100 text-gray-500 group-hover/item:bg-navy-900 group-hover/item:text-emas-400' }}">
-                                                    <x-ikon :nama="$item->ikon" class="w-4 h-4" />
-                                                </span>
+                                               class="group/item relative flex items-center gap-3 rounded-md py-2.5 pl-4 pr-3 text-sm leading-snug transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 {{ $aktif ? 'bg-navy-50 font-semibold text-navy-950' : 'text-gray-700 hover:bg-navy-50/70 hover:text-navy-950' }}">
+                                                <span class="absolute inset-y-2 left-0 w-[3px] rounded-full bg-emas-500 transition-opacity duration-150 {{ $aktif ? 'opacity-100' : 'opacity-0 group-hover/item:opacity-100 group-focus-visible/item:opacity-100' }}" aria-hidden="true"></span>
+                                                <x-ikon :nama="$item->ikon" class="h-[18px] w-[18px] shrink-0 transition-colors {{ $aktif ? 'text-emas-600' : 'text-gray-400 group-hover/item:text-emas-600' }}" />
                                                 <span>{{ $item->judul }}</span>
                                             </a>
                                         </li>

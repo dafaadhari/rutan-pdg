@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             BeritaSeeder::class,
             HalamanSeeder::class,
+            PengaturanSeeder::class,
         ]);
     }
 }

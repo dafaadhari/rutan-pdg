@@ -5,6 +5,9 @@
 /* Konten bawaan halaman (disimpan di database) memakai kelas Tailwind */
 @source '../../database/seeders/halaman';
 
+/* Varian "ciut:" — aktif saat sidebar admin diciutkan (kelas .sidebar-ciut di <html>) */
+@custom-variant ciut (&:where(.sidebar-ciut, .sidebar-ciut *));
+
 @theme {
     /* Plus Jakarta Sans di-self-host via laravel-vite-plugin (directive @fonts) */
     --font-sans: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',

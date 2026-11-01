@@ -77,6 +77,6 @@ it('tetap bisa masuk dan menolak kredensial salah', function () {
     $this->assertGuest();
 
     $this->post('/admin/login', ['email' => 'humas@rutan.go.id', 'password' => 'password'])
-        ->assertRedirect(route('admin.berita.index'));
+        ->assertRedirect(route('admin.dashboard'));
     $this->assertAuthenticatedAs($admin);
 });

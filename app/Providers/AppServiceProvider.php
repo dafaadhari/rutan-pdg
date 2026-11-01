@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\HomeController;
 use App\Models\Halaman;
+use App\Models\Pengaturan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // Tanggal selalu berbahasa Indonesia (mis. "Selasa, 25 Agustus 2026"), apa pun isi .env
         Carbon::setLocale('id');
+
+        // Banner pengumuman: hanya bila aktif & dalam masa berlaku
+        View::composer('layouts.publik', function ($view) {
+            $pengumuman = Pengaturan::ambil('pengumuman', Pengaturan::BAWAAN_PENGUMUMAN);
+            $view->with('pengumumanAktif', PengaturanController::statusPengumuman($pengumuman) === 'aktif' ? $pengumuman : null);
+        });
 
         // Kontak resmi untuk topbar, footer, dan kotak pengaduan
         View::composer(['partials.navbar', 'partials.footer', 'layouts.page'], function ($view) {

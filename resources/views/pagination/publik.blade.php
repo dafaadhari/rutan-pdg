@@ -19,11 +19,11 @@
             {{-- Sebelumnya --}}
             @if ($paginator->onFirstPage())
                 <span class="{{ $kelasTombol }} {{ $kelasMati }}" aria-disabled="true">
-                    <span aria-hidden="true">&lsaquo;</span> Sebelumnya
+                    <span aria-hidden="true"><x-panah arah="chevron-kiri" /></span> Sebelumnya
                 </span>
             @else
                 <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="{{ $kelasTombol }} {{ $kelasAktif }}">
-                    <span aria-hidden="true">&lsaquo;</span> Sebelumnya
+                    <span aria-hidden="true"><x-panah arah="chevron-kiri" /></span> Sebelumnya
                 </a>
             @endif
 
@@ -50,11 +50,11 @@
             {{-- Berikutnya --}}
             @if ($paginator->hasMorePages())
                 <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="{{ $kelasTombol }} {{ $kelasAktif }}">
-                    Berikutnya <span aria-hidden="true">&rsaquo;</span>
+                    Berikutnya <span aria-hidden="true"><x-panah arah="chevron-kanan" /></span>
                 </a>
             @else
                 <span class="{{ $kelasTombol }} {{ $kelasMati }}" aria-disabled="true">
-                    Berikutnya <span aria-hidden="true">&rsaquo;</span>
+                    Berikutnya <span aria-hidden="true"><x-panah arah="chevron-kanan" /></span>
                 </span>
             @endif
         </div>

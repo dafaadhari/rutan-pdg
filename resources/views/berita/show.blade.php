@@ -32,8 +32,7 @@
             </nav>
 
             <p class="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emas-300">
-                <span class="w-6 h-px bg-emas-400"></span>
-                Rilis Resmi
+                <a href="{{ route('berita.index', ['kategori' => $berita->kategori]) }}" class="hover:text-emas-200">{{ $berita->kategori_label }}</a>
             </p>
             <h1 class="mt-2 max-w-4xl text-3xl sm:text-4xl font-extrabold leading-tight tracking-tight">{{ $berita->judul }}</h1>
             <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-navy-200">
@@ -88,7 +87,7 @@
                 </div>
 
                 <a href="{{ route('berita.index') }}" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4">
-                    <span aria-hidden="true">&larr;</span> Kembali ke daftar berita
+                    <span aria-hidden="true"><x-panah arah="kiri" /></span> Kembali ke daftar berita
                 </a>
             </article>
 
@@ -103,7 +102,7 @@
                                     <a href="{{ route('berita.show', $terbaru->slug) }}" class="group flex gap-3 py-4 focus:outline-none focus-visible:bg-navy-50">
                                         <x-sampul-berita :berita="$terbaru" ukuran="kecil" class="w-20 h-16 shrink-0 rounded-lg" />
                                         <div class="min-w-0">
-                                            <time datetime="{{ $terbaru->created_at->toDateString() }}" class="text-xs text-gray-500">{{ $terbaru->created_at->translatedFormat('d F Y') }}</time>
+                                            <p class="text-xs text-gray-500"><span class="font-semibold text-emas-700">{{ $terbaru->kategori_label }}</span> · <time datetime="{{ $terbaru->created_at->toDateString() }}">{{ $terbaru->created_at->translatedFormat('d F Y') }}</time></p>
                                             <h3 class="mt-0.5 text-sm font-semibold leading-snug text-navy-950 group-hover:text-navy-700 line-clamp-3">{{ $terbaru->judul }}</h3>
                                         </div>
                                     </a>
@@ -121,7 +120,7 @@
                         </p>
                         <p class="mt-1.5 text-sm leading-relaxed text-navy-200">{{ $hariKunjungan }}. Bawa identitas resmi (KTP/KK). Layanan gratis.</p>
                         <a href="#kontak" class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-white hover:text-emas-300">
-                            Lihat jadwal <span aria-hidden="true">&rarr;</span>
+                            Lihat jadwal <span aria-hidden="true"><x-panah /></span>
                         </a>
                     </div>
                 </div>

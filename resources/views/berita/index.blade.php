@@ -19,7 +19,6 @@
             <div class="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                 <div>
                     <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emas-300">
-                        <span class="w-6 h-px bg-emas-400"></span>
                         Humas Rutan Pandeglang
                     </p>
                     <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight">Berita &amp; kegiatan</h1>
@@ -27,6 +26,9 @@
                 </div>
 
                 <form action="{{ route('berita.index') }}" method="GET" role="search" class="w-full lg:w-96">
+                    @if($kategori)
+                        <input type="hidden" name="kategori" value="{{ $kategori }}">
+                    @endif
                     <label for="cari-berita" class="sr-only">Cari berita</label>
                     <div class="flex rounded-xl bg-white/10 ring-1 ring-white/15 focus-within:ring-2 focus-within:ring-emas-400">
                         <input id="cari-berita" type="search" name="q" value="{{ $q }}" placeholder="Cari judul berita…"
@@ -40,10 +42,22 @@
 
     <!-- DAFTAR BERITA -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-12">
+        <!-- Filter kategori -->
+        <nav aria-label="Filter kategori berita" class="mb-8 flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+            @foreach (['' => 'Semua'] + \App\Models\Berita::KATEGORI as $nilai => $label)
+                @php $aktif = ($kategori ?? '') === $nilai; @endphp
+                <a href="{{ route('berita.index', array_filter(['kategori' => $nilai ?: null, 'q' => $q ?: null])) }}"
+                   @if($aktif) aria-current="page" @endif
+                   class="shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 {{ $aktif ? 'border-navy-950 bg-navy-950 text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-navy-300 hover:text-navy-950' }}">
+                    {{ $label }}
+                </a>
+            @endforeach
+        </nav>
+
         @if($q !== '')
             <p class="mb-6 text-sm text-gray-600">
                 {{ $beritas->total() }} hasil untuk <strong class="text-navy-950">"{{ $q }}"</strong> ·
-                <a href="{{ route('berita.index') }}" class="font-semibold text-navy-800 underline decoration-emas-500 underline-offset-4">Tampilkan semua</a>
+                <a href="{{ route('berita.index', array_filter(['kategori' => $kategori])) }}" class="font-semibold text-navy-800 underline decoration-emas-500 underline-offset-4">Hapus pencarian</a>
             </p>
         @endif
 
@@ -53,8 +67,10 @@
                     <article class="group">
                         <a href="{{ route('berita.show', $berita->slug) }}" class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 rounded-2xl">
                             <x-sampul-berita :berita="$berita" class="aspect-[16/10] rounded-2xl shadow-sm" />
-                            <p class="mt-4 text-sm font-semibold text-emas-700">
-                                <time datetime="{{ $berita->created_at->toDateString() }}">{{ $berita->created_at->translatedFormat('d F Y') }}</time>
+                            <p class="mt-4 flex flex-wrap items-center gap-x-2 text-sm">
+                                <span class="font-bold text-emas-700">{{ $berita->kategori_label }}</span>
+                                <span class="text-gray-300" aria-hidden="true">•</span>
+                                <time datetime="{{ $berita->created_at->toDateString() }}" class="text-gray-500">{{ $berita->created_at->translatedFormat('d F Y') }}</time>
                             </p>
                             <h2 class="mt-1.5 text-lg font-bold leading-snug text-navy-950 group-hover:text-navy-700 transition line-clamp-3">{{ $berita->judul }}</h2>
                             <p class="mt-2 text-sm leading-relaxed text-gray-600 line-clamp-3">{{ Str::limit(strip_tags($berita->konten), 180) }}</p>

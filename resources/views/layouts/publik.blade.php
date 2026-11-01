@@ -46,6 +46,10 @@
         Lewati ke konten
     </a>
 
+    @if($pengumumanAktif ?? null)
+        @include('partials.pengumuman', ['pengumuman' => $pengumumanAktif])
+    @endif
+
     @include('partials.navbar')
 
     <main id="konten" class="flex-grow">

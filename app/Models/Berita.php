@@ -10,9 +10,19 @@ class Berita extends Model
 {
     use HasFactory;
 
+    /**
+     * Kategori berita: kunci => label tampilan.
+     */
+    public const KATEGORI = [
+        'pengumuman' => 'Pengumuman',
+        'kegiatan' => 'Kegiatan',
+        'rilis-pers' => 'Rilis Pers',
+    ];
+
     protected $fillable = [
         'judul',
         'slug',
+        'kategori',
         'konten',
         'gambar_sampul',
         'status',
@@ -36,5 +46,13 @@ class Berita extends Model
         }
 
         return Storage::disk('public')->url($this->gambar_sampul);
+    }
+
+    /**
+     * Label kategori untuk tampilan.
+     */
+    public function getKategoriLabelAttribute(): string
+    {
+        return self::KATEGORI[$this->kategori] ?? 'Kegiatan';
     }
 }

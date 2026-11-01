@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\DasborController;
 use App\Http\Controllers\Admin\HalamanController;
+use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaPublikController;
 use App\Http\Controllers\HomeController;
@@ -44,13 +46,19 @@ Route::middleware('guest')->group(function () {
 */
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-    Route::redirect('/', '/admin/berita');
+    Route::get('/', [DasborController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth'); // Handled explicitly
 
     // Manajemen Berita (CRUD)
     Route::resource('berita', BeritaController::class)
         ->parameters(['berita' => 'berita'])
         ->except(['show']);
+
+    // Pengaturan beranda: banner pengumuman & sambutan pimpinan
+    Route::get('/pengumuman', [PengaturanController::class, 'editPengumuman'])->name('pengumuman.edit');
+    Route::put('/pengumuman', [PengaturanController::class, 'updatePengumuman'])->name('pengumuman.update');
+    Route::get('/sambutan', [PengaturanController::class, 'editSambutan'])->name('sambutan.edit');
+    Route::put('/sambutan', [PengaturanController::class, 'updateSambutan'])->name('sambutan.update');
 
     // Manajemen Halaman (CRUD)
     Route::resource('halaman', HalamanController::class)

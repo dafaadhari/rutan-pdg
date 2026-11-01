@@ -87,7 +87,7 @@
 
             <div class="mt-6 flex flex-col items-center gap-2 text-sm">
                 <a href="{{ url('/') }}" class="inline-flex items-center gap-1.5 font-semibold text-navy-200 hover:text-white transition focus:outline-none focus-visible:underline">
-                    <span aria-hidden="true">&larr;</span> Kembali ke portal publik
+                    <span aria-hidden="true"><x-panah arah="kiri" /></span> Kembali ke portal publik
                 </a>
                 <p class="text-xs text-navy-400">&copy; {{ date('Y') }} Rutan Kelas IIB Pandeglang</p>
             </div>

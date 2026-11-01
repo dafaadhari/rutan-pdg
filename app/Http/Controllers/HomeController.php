@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use App\Models\Halaman;
+use App\Models\Pengaturan;
 
 class HomeController extends Controller
 {
@@ -46,6 +47,7 @@ class HomeController extends Controller
             'layananHighlight' => $layananHighlight,
             'informasiHighlight' => $informasiHighlight,
             'halamanPengaduan' => $halamanPengaduan,
+            'sambutan' => Pengaturan::ambil('sambutan', Pengaturan::BAWAAN_SAMBUTAN),
             'maklumat' => config('rutan.maklumat'),
             'saluranPengaduan' => $this->saluranPengaduan($halamanPengaduan),
         ]);

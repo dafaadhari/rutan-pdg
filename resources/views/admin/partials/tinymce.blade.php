@@ -7,7 +7,7 @@
     tinymce.init({
         selector: @json($selector ?? '#konten'),
         license_key: 'gpl',
-        skin: 'oxide-dark',
+        skin: 'oxide',
         language: 'id',
         language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n@24.12.30/langs7/id.js',
         menubar: false,
