@@ -9,7 +9,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-bold text-navy-950 tracking-tight">Manajemen Halaman</h1>
-            <p class="text-sm text-gray-500 mt-1">Kelola isi halaman Tentang Kami, Layanan, dan Informasi Publik beserta urutan menunya.</p>
+            <p class="text-sm text-gray-500 mt-1">Kelola isi halaman Profil, Layanan, dan Informasi Publik beserta urutan menunya.</p>
         </div>
         <div>
             <a href="{{ route('admin.halaman.create', $kategori ? ['kategori' => $kategori] : []) }}"
@@ -140,7 +140,7 @@
                                                 {{ $item->judul }}
                                             </a>
                                             <div class="text-xs text-gray-500 font-mono mt-0.5 flex items-center gap-1.5">
-                                                <span class="truncate">/{{ $item->kategori }}/{{ $item->slug }}</span>
+                                                <span class="truncate">/{{ $item->kategori }}#{{ $item->slug }}</span>
                                                 @if($item->status === 'publikasi')
                                                     <a href="{{ $item->url }}" target="_blank" class="text-emas-700 hover:text-emas-600 shrink-0" title="Buka di halaman publik">
                                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

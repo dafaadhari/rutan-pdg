@@ -4,6 +4,9 @@
     @php
         $fotoGedung = \App\Support\Aset::gedung();
         $kelasEyebrow = 'inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest';
+        $tautanLapor = config('rutan.kontak.lapor');
+        // Jumlah kolom kartu layanan mengikuti jumlah highlight agar tidak ada slot kosong
+        $kolomLayanan = [1 => 'lg:grid-cols-1', 2 => 'lg:grid-cols-2', 3 => 'lg:grid-cols-3'][$layananHighlight->count()] ?? 'lg:grid-cols-4';
     @endphp
 
     <!-- HERO -->
@@ -35,10 +38,10 @@
                            class="inline-flex items-center gap-2 rounded-lg bg-emas-500 px-6 py-3 text-sm font-bold text-navy-950 shadow-lg shadow-emas-500/20 hover:bg-emas-400 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-300 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950">
                             Lihat Layanan <span aria-hidden="true"><x-panah /></span>
                         </a>
-                        @if($halamanPengaduan)
-                            <a href="{{ $halamanPengaduan->url }}"
+                        @if($tautanLapor)
+                            <a href="{{ $tautanLapor }}" target="_blank" rel="noopener"
                                class="inline-flex items-center gap-2 rounded-lg border border-white/25 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 hover:border-white/40 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-300">
-                                Sampaikan Pengaduan
+                                Sampaikan Pengaduan <span aria-hidden="true"><x-panah arah="serong" /></span>
                             </a>
                         @endif
                     </div>
@@ -74,7 +77,7 @@
     @if($layananHighlight->isNotEmpty())
         <section id="layanan" aria-labelledby="judul-layanan" class="relative z-10 -mt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-28">
             <h2 id="judul-layanan" class="sr-only">Layanan utama</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 {{ $kolomLayanan }} gap-4">
                 @foreach ($layananHighlight as $layanan)
                     <a href="{{ $layanan->url }}"
                        class="group relative flex gap-4 sm:flex-col sm:gap-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-lg shadow-navy-950/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-navy-950/10 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 focus-visible:ring-offset-2">
@@ -224,7 +227,7 @@
                         Transparansi
                     </p>
                     <h2 id="judul-informasi" class="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-navy-950">Informasi publik</h2>
-                    <p class="mt-1 text-sm text-gray-600">Dokumen perencanaan, kinerja, dan anggaran Rutan Kelas IIB Pandeglang.</p>
+                    <p class="mt-1 text-sm text-gray-600">Dokumen perencanaan dan akuntabilitas kinerja Rutan Kelas IIB Pandeglang.</p>
                 </div>
                 <a href="{{ route('informasi-publik') }}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-navy-950 hover:underline underline-offset-4 focus:outline-none focus-visible:underline">
                     Semua dokumen <span aria-hidden="true"><x-panah /></span>
@@ -259,16 +262,33 @@
                 <h2 id="judul-maklumat" class="{{ $kelasEyebrow }} text-emas-700">
                     Maklumat Pelayanan
                 </h2>
-                <blockquote class="mt-6 border-l-4 border-emas-500 pl-6">
-                    <p class="text-xl sm:text-2xl font-semibold leading-snug tracking-tight text-navy-950">
-                        &ldquo;{{ $maklumat['isi'] }}&rdquo;
-                    </p>
-                </blockquote>
-                <figcaption class="mt-6 flex items-center gap-3 pl-7">
-                    <x-logo class="w-10 h-10" />
-                    <span class="text-sm font-semibold text-gray-700">{{ $maklumat['penanda_tangan'] }}</span>
-                </figcaption>
-                <ul class="mt-8 flex flex-wrap gap-2 pl-7">
+                @if($maklumatFoto['gambar'])
+                    {{-- Foto maklumat resmi (diunggah admin); dibuka di lightbox yang bisa diperbesar --}}
+                    @php $altMaklumat = 'Maklumat Pelayanan Rutan Kelas IIB Pandeglang'; @endphp
+                    <button type="button" data-zoom="{{ asset('storage/' . $maklumatFoto['gambar']) }}" data-zoom-alt="{{ $altMaklumat }}"
+                            class="group relative mt-6 block w-full overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 text-left shadow-sm transition hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 focus-visible:ring-offset-2">
+                        <img src="{{ asset('storage/' . $maklumatFoto['gambar']) }}" alt="{{ $altMaklumat }}"
+                             class="mx-auto max-h-[34rem] w-full object-contain" loading="lazy">
+                        <span class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-lg bg-navy-950/85 px-3 py-2 text-xs font-bold text-white backdrop-blur transition group-hover:bg-navy-950">
+                            <svg class="h-4 w-4 text-emas-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"/></svg>
+                            Klik untuk memperbesar
+                        </span>
+                    </button>
+                    @if($maklumatFoto['keterangan'])
+                        <figcaption class="mt-3 text-sm text-gray-600">{{ $maklumatFoto['keterangan'] }}</figcaption>
+                    @endif
+                @else
+                    <blockquote class="mt-6 border-l-4 border-emas-500 pl-6">
+                        <p class="text-xl sm:text-2xl font-semibold leading-snug tracking-tight text-navy-950">
+                            &ldquo;{{ $maklumat['isi'] }}&rdquo;
+                        </p>
+                    </blockquote>
+                    <figcaption class="mt-6 flex items-center gap-3 pl-7">
+                        <x-logo class="w-10 h-10" />
+                        <span class="text-sm font-semibold text-gray-700">{{ $maklumat['penanda_tangan'] }}</span>
+                    </figcaption>
+                @endif
+                <ul class="mt-8 flex flex-wrap gap-2 {{ $maklumatFoto['gambar'] ? '' : 'pl-7' }}">
                     @foreach ($maklumat['komitmen'] as $komitmen)
                         <li class="inline-flex items-center gap-1.5 rounded-full bg-navy-950 px-3.5 py-1.5 text-xs font-bold text-white">
                             <svg class="w-3.5 h-3.5 text-emas-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>

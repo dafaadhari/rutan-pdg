@@ -25,7 +25,9 @@ it('menampilkan dasbor dengan statistik dan hal yang perlu perhatian', function 
 it('menampilkan halaman pengaturan pengumuman dan sambutan', function () {
     $admin = User::factory()->create();
 
-    $this->actingAs($admin)->get('/admin/pengumuman')->assertOk()->assertSee('Banner pengumuman');
+    $this->actingAs($admin)->get('/admin/pengumuman')->assertOk()->assertSee('Pop-up pengumuman');
     $this->actingAs($admin)->get('/admin/sambutan')->assertOk()->assertSee('Sambutan Kepala Rutan');
+    $this->actingAs($admin)->get('/admin/maklumat')->assertOk()->assertSee('Maklumat Pelayanan');
+    $this->actingAs($admin)->get('/admin/struktur')->assertOk()->assertSee('Struktur Organisasi');
     $this->actingAs($admin)->get('/admin/berita/create')->assertOk()->assertSee('Gambar sampul')->assertSee('Kategori');
 });

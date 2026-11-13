@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Pengumuman')
+@section('title', 'Pop-up Pengumuman')
 
 @section('content')
 @php
@@ -23,22 +23,28 @@
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
             <div class="flex items-center gap-3">
-                <h1 class="text-2xl font-extrabold tracking-tight text-navy-950">Banner pengumuman</h1>
+                <h1 class="text-2xl font-extrabold tracking-tight text-navy-950">Pop-up pengumuman</h1>
                 <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 {{ $labelStatus[1] }}">{{ $labelStatus[0] }}</span>
             </div>
-            <p class="mt-1 text-sm text-gray-600">Pengumuman penting yang tampil di bagian paling atas semua halaman portal.</p>
+            <p class="mt-1 text-sm text-gray-600">Kotak pengumuman yang muncul sekali saat pengunjung pertama kali membuka portal.</p>
         </div>
         <button type="submit" class="self-start rounded-lg bg-emas-500 px-5 py-2.5 text-sm font-bold text-navy-950 shadow-sm hover:bg-emas-400 transition sm:self-auto">Simpan pengumuman</button>
     </div>
 
     <!-- Pratinjau -->
-    <section aria-label="Pratinjau banner" class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <p class="border-b border-gray-200 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Pratinjau (tersimpan)</p>
-        @if($pengumuman['teks'])
-            @include('partials.pengumuman', ['pengumuman' => $pengumuman, 'pratinjau' => true])
-        @else
-            <p class="px-4 py-4 text-sm text-gray-500">Belum ada teks pengumuman.</p>
-        @endif
+    <section aria-label="Pratinjau pop-up" class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div class="flex items-center justify-between gap-3 border-b border-gray-200 px-4 py-2">
+            <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">Pratinjau langsung</p>
+            <p id="catatan-pratinjau" class="hidden text-xs font-semibold text-amber-700">Belum disimpan</p>
+        </div>
+        <div class="flex justify-center bg-navy-950/60 px-4 py-8 sm:py-10">
+            <div id="pratinjau-pengumuman" class="w-full max-w-lg rounded-2xl shadow-2xl shadow-navy-950/40">
+                @include('partials.pengumuman-kotak', ['pengumuman' => array_merge($pengumuman, array_filter([
+                    'tingkat' => old('tingkat'), 'judul' => old('judul'), 'teks' => old('teks'),
+                    'tautan' => old('tautan'), 'label_tautan' => old('label_tautan'), 'selesai' => old('selesai'),
+                ], fn ($v) => $v !== null)), 'pratinjau' => true])
+            </div>
+        </div>
     </section>
 
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -46,23 +52,31 @@
             <label for="aktif" class="flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 hover:border-emas-500 transition">
                 <input type="checkbox" name="aktif" id="aktif" value="1" @checked($nilai('aktif')) class="mt-0.5 h-4 w-4 rounded border-gray-300 accent-navy-900">
                 <span>
-                    <span class="block text-sm font-semibold text-navy-950">Tampilkan banner di portal</span>
-                    <span class="block text-xs text-gray-500 mt-0.5">Banner hanya tayang selama tanggal berlaku di bawah. Pengunjung dapat menutupnya.</span>
+                    <span class="block text-sm font-semibold text-navy-950">Tampilkan pop-up di portal</span>
+                    <span class="block text-xs text-gray-500 mt-0.5">Pop-up hanya tayang selama tanggal berlaku di bawah dan muncul sekali per pengunjung. Bila isi pengumuman diubah, pop-up muncul lagi.</span>
                 </span>
             </label>
 
             <div>
+                <label for="judul" class="{{ $kelasLabel }}">Judul (opsional)</label>
+                <input type="text" name="judul" id="judul" maxlength="80" value="{{ $nilai('judul') }}" placeholder="Contoh: Perubahan jadwal kunjungan"
+                       class="{{ $kelasInput }} {{ $batas('judul') }}">
+                @error('judul') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                <p class="mt-1.5 text-xs text-gray-500">Kosongkan untuk memakai judul "Pengumuman".</p>
+            </div>
+
+            <div>
                 <label for="teks" class="{{ $kelasLabel }}">Teks pengumuman</label>
-                <textarea name="teks" id="teks" rows="3" maxlength="200" class="{{ $kelasInput }} {{ $batas('teks') }}"
+                <textarea name="teks" id="teks" rows="4" maxlength="300" class="{{ $kelasInput }} {{ $batas('teks') }}"
                           placeholder="Contoh: Layanan kunjungan ditiadakan pada 17 Agustus 2026. Penitipan barang tetap dilayani.">{{ $nilai('teks') }}</textarea>
                 @error('teks') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-                <p class="mt-1.5 text-xs text-gray-500">Singkat & jelas, maksimal 200 karakter.</p>
+                <p class="mt-1.5 text-xs text-gray-500">Singkat & jelas, maksimal 300 karakter.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                     <label for="tautan" class="{{ $kelasLabel }}">Tautan (opsional)</label>
-                    <input type="text" name="tautan" id="tautan" value="{{ $nilai('tautan') }}" placeholder="/layanan/jadwal-besuk"
+                    <input type="text" name="tautan" id="tautan" value="{{ $nilai('tautan') }}" placeholder="/layanan#jadwal-besuk"
                            class="{{ $kelasInput }} {{ $batas('tautan') }} font-mono">
                     @error('tautan') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     <p class="mt-1.5 text-xs text-gray-500">Halaman portal diawali "/", situs lain diawali "https://".</p>
@@ -111,4 +125,55 @@
         </div>
     </div>
 </form>
+
+@push('scripts')
+<script>
+    // Pratinjau langsung: kotak pop-up ikut berubah saat form diisi (sebelum disimpan)
+    (function () {
+        const form = document.querySelector('form[action="{{ route('admin.pengumuman.update') }}"]');
+        const kotak = document.getElementById('pratinjau-pengumuman');
+        if (!form || !kotak) return;
+
+        const gaya = @json(\App\Models\Pengaturan::GAYA_PENGUMUMAN);
+        const label = @json(\App\Models\Pengaturan::TINGKAT_PENGUMUMAN);
+        const bagian = (nama) => kotak.querySelector('[data-pv="' + nama + '"]');
+        const nilai = (nama) => (form.elements[nama] ? form.elements[nama].value : '').trim();
+        const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        // Kelas dasar (tanpa warna) diambil sekali dari markup awal
+        const tingkatAwal = form.querySelector('input[name="tingkat"]:checked')?.value || 'penting';
+        const tanpaWarna = (el, warna) => el.className.split(' ').filter((k) => k && !warna.split(' ').includes(k)).join(' ');
+        const dasarAksen = tanpaWarna(bagian('aksen'), gaya[tingkatAwal][0]);
+        const dasarLencana = tanpaWarna(bagian('lencana'), gaya[tingkatAwal][1]);
+
+        function perbarui() {
+            const tingkat = form.querySelector('input[name="tingkat"]:checked')?.value || 'penting';
+            bagian('aksen').className = dasarAksen + ' ' + gaya[tingkat][0];
+            bagian('lencana').className = dasarLencana + ' ' + gaya[tingkat][1];
+            bagian('label').textContent = label[tingkat];
+
+            bagian('judul').textContent = nilai('judul') || 'Pengumuman';
+            bagian('teks').textContent = nilai('teks') || 'Teks pengumuman akan tampil di sini.';
+
+            const tautan = bagian('tautan');
+            tautan.classList.toggle('hidden', !nilai('tautan'));
+            bagian('label-tautan').textContent = nilai('label_tautan') || 'Selengkapnya';
+
+            const selesai = nilai('selesai');
+            bagian('selesai').classList.toggle('hidden', !selesai);
+            if (selesai) {
+                const [t, b, h] = selesai.split('-').map(Number);
+                bagian('tanggal').textContent = h + ' ' + bulan[b - 1] + ' ' + t;
+            }
+        }
+
+        form.addEventListener('input', function () {
+            perbarui();
+            document.getElementById('catatan-pratinjau').classList.remove('hidden');
+        });
+        form.addEventListener('change', perbarui);
+        perbarui();
+    })();
+</script>
+@endpush
 @endsection

@@ -39,48 +39,39 @@ class HomeController extends Controller
             ->take(self::MAKS_HIGHLIGHT)
             ->values();
 
-        $halamanPengaduan = $layanan->firstWhere('slug', 'pengaduan');
-
         return view('welcome', [
             'beritaUtama' => $beritaUtama,
             'beritaLainnya' => $beritaLainnya,
             'layananHighlight' => $layananHighlight,
             'informasiHighlight' => $informasiHighlight,
-            'halamanPengaduan' => $halamanPengaduan,
             'sambutan' => Pengaturan::ambil('sambutan', Pengaturan::BAWAAN_SAMBUTAN),
             'maklumat' => config('rutan.maklumat'),
-            'saluranPengaduan' => $this->saluranPengaduan($halamanPengaduan),
+            'maklumatFoto' => Pengaturan::ambil('maklumat', Pengaturan::BAWAAN_MAKLUMAT),
+            'saluranPengaduan' => $this->saluranPengaduan(),
         ]);
     }
 
     /**
      * Saluran pengaduan untuk seksi Maklumat Pelayanan di beranda.
-     * Kanal tanpa data (halaman pengaduan draft, WhatsApp kosong) tidak ditampilkan.
+     * Pengaduan diarahkan ke kanal eksternal resmi (SP4N-LAPOR!) dan WhatsApp Humas.
      */
-    protected function saluranPengaduan(?Halaman $halamanPengaduan): array
+    protected function saluranPengaduan(): array
     {
-        $whatsapp = config('rutan.kontak.whatsapp_pengaduan');
+        $kontak = config('rutan.kontak');
 
         return array_values(array_filter([
-            $halamanPengaduan ? [
-                'judul' => 'Pengaduan Online',
-                'ket' => 'Kanal resmi pengaduan Rutan Pandeglang',
-                'ikon' => 'chat',
-                'url' => $halamanPengaduan->url,
-                'luar' => false,
-            ] : null,
             [
                 'judul' => 'SP4N-LAPOR!',
                 'ket' => 'Layanan aspirasi & pengaduan online nasional',
                 'ikon' => 'megafon',
-                'url' => 'https://www.lapor.go.id',
+                'url' => $kontak['lapor'],
                 'luar' => true,
             ],
-            $whatsapp ? [
-                'judul' => 'WhatsApp Pengaduan',
+            $kontak['whatsapp_humas'] ? [
+                'judul' => 'WhatsApp Humas',
                 'ket' => 'Respons pada jam kerja',
                 'ikon' => 'telepon',
-                'url' => 'https://wa.me/' . $whatsapp,
+                'url' => 'https://wa.me/' . $kontak['whatsapp_humas'],
                 'luar' => true,
             ] : null,
             [

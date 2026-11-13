@@ -6,7 +6,7 @@ use App\Models\Pengaturan;
 use Illuminate\Database\Seeder;
 
 /**
- * DATA DUMMY untuk sambutan pimpinan & banner pengumuman.
+ * DATA DUMMY untuk sambutan pimpinan & pop-up pengumuman.
  * Ganti lewat panel admin (menu Sambutan & Pengumuman) setelah data resmi dari humas tersedia.
  */
 class PengaturanSeeder extends Seeder
@@ -30,8 +30,9 @@ class PengaturanSeeder extends Seeder
         Pengaturan::simpan('pengumuman', [
             'aktif' => true,
             'tingkat' => 'penting',
-            'teks' => 'Layanan kunjungan tatap muka ditiadakan sementara pada Senin, 17 November 2026 karena kegiatan internal. Penitipan barang tetap dilayani.',
-            'tautan' => '/layanan/jadwal-besuk',
+            'judul' => 'Perubahan jadwal kunjungan',
+            'teks' => 'Layanan kunjungan tatap muka ditiadakan sementara pada Senin, 16 November 2026 karena kegiatan internal. Penitipan barang tetap dilayani.',
+            'tautan' => '/layanan#jadwal-besuk',
             'label_tautan' => 'Lihat jadwal',
             'mulai' => now()->toDateString(),
             'selesai' => now()->addDays(14)->toDateString(),

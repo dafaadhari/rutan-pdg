@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         // Tanggal selalu berbahasa Indonesia (mis. "Selasa, 25 Agustus 2026"), apa pun isi .env
         Carbon::setLocale('id');
 
-        // Banner pengumuman: hanya bila aktif & dalam masa berlaku
+        // Pop-up pengumuman: hanya bila aktif & dalam masa berlaku
         View::composer('layouts.publik', function ($view) {
             $pengumuman = Pengaturan::ambil('pengumuman', Pengaturan::BAWAAN_PENGUMUMAN);
             $view->with('pengumumanAktif', PengaturanController::statusPengumuman($pengumuman) === 'aktif' ? $pengumuman : null);
@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('partials.navbar', function ($view) {
             $view->with('menuHalaman', Halaman::publikasi()
                 ->urut()
-                ->get(['id', 'kategori', 'slug', 'judul', 'ikon'])
+                ->get(['id', 'kategori', 'slug', 'judul', 'ringkasan', 'ikon'])
                 ->groupBy('kategori'));
         });
 

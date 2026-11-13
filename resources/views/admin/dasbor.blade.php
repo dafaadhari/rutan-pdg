@@ -38,7 +38,7 @@
             ['label' => 'Berita terbit', 'nilai' => $statistik['beritaPublikasi'], 'ket' => $statistik['berita'] . ' total', 'ikon' => 'buku', 'url' => route('admin.berita.index', ['status' => 'publikasi'])],
             ['label' => 'Draft berita', 'nilai' => $statistik['beritaDraft'], 'ket' => 'menunggu terbit', 'ikon' => 'dokumen', 'url' => route('admin.berita.index', ['status' => 'draft'])],
             ['label' => 'Halaman informasi', 'nilai' => $statistik['halaman'], 'ket' => $statistik['halamanDraft'] . ' draft', 'ikon' => 'gedung', 'url' => route('admin.halaman.index')],
-            ['label' => 'Banner pengumuman', 'nilai' => $labelStatus[0], 'ket' => $pengumuman['selesai'] ? 's.d. ' . \Illuminate\Support\Carbon::parse($pengumuman['selesai'])->translatedFormat('d M Y') : 'tanpa batas', 'ikon' => 'megafon', 'url' => route('admin.pengumuman.edit')],
+            ['label' => 'Pop-up pengumuman', 'nilai' => $labelStatus[0], 'ket' => $pengumuman['selesai'] ? 's.d. ' . \Illuminate\Support\Carbon::parse($pengumuman['selesai'])->translatedFormat('d M Y') : 'tanpa batas', 'ikon' => 'megafon', 'url' => route('admin.pengumuman.edit')],
         ] as $kartu)
             <a href="{{ $kartu['url'] }}" class="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:border-navy-200 hover:shadow-md transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500">
                 <div class="flex items-center justify-between">
@@ -112,14 +112,14 @@
                 @endif
             </section>
 
-            <!-- Banner pengumuman -->
-            <section class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm" aria-labelledby="judul-banner">
+            <!-- Pop-up pengumuman -->
+            <section class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm" aria-labelledby="judul-popup">
                 <div class="flex items-center justify-between gap-2">
-                    <h2 id="judul-banner" class="text-base font-bold text-navy-950">Banner pengumuman</h2>
+                    <h2 id="judul-popup" class="text-base font-bold text-navy-950">Pop-up pengumuman</h2>
                     <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 {{ $labelStatus[1] }}">{{ $labelStatus[0] }}</span>
                 </div>
                 <p class="mt-2 text-sm leading-relaxed text-gray-600 line-clamp-3">{{ $pengumuman['teks'] ?: 'Belum ada teks pengumuman.' }}</p>
-                <a href="{{ route('admin.pengumuman.edit') }}" class="mt-3 inline-block text-sm font-semibold text-emas-700 hover:underline">Kelola banner <x-panah /></a>
+                <a href="{{ route('admin.pengumuman.edit') }}" class="mt-3 inline-block text-sm font-semibold text-emas-700 hover:underline">Kelola pop-up <x-panah /></a>
             </section>
         </div>
     </div>

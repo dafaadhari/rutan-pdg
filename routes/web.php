@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\DasborController;
 use App\Http\Controllers\Admin\HalamanController;
 use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\StrukturOrganisasiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaPublikController;
 use App\Http\Controllers\HomeController;
@@ -21,7 +22,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/berita', [BeritaPublikController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}', [BeritaPublikController::class, 'show'])->name('berita.show');
 
-// Halaman Statis & Informasi Publik Satker
+// Satu halaman per kategori; /{kategori}/{slug} lama dialihkan ke /{kategori}#{slug}
 Route::get('/tentang-kami/{slug?}', [PageController::class, 'tentangKami'])->name('tentang-kami');
 Route::get('/layanan/{slug?}', [PageController::class, 'layanan'])->name('layanan');
 Route::get('/informasi-publik/{slug?}', [PageController::class, 'informasiPublik'])->name('informasi-publik');
@@ -54,11 +55,18 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
         ->parameters(['berita' => 'berita'])
         ->except(['show']);
 
-    // Pengaturan beranda: banner pengumuman & sambutan pimpinan
+    // Pengaturan beranda: pop-up pengumuman, sambutan pimpinan, maklumat pelayanan
     Route::get('/pengumuman', [PengaturanController::class, 'editPengumuman'])->name('pengumuman.edit');
     Route::put('/pengumuman', [PengaturanController::class, 'updatePengumuman'])->name('pengumuman.update');
     Route::get('/sambutan', [PengaturanController::class, 'editSambutan'])->name('sambutan.edit');
     Route::put('/sambutan', [PengaturanController::class, 'updateSambutan'])->name('sambutan.update');
+    Route::get('/maklumat', [PengaturanController::class, 'editMaklumat'])->name('maklumat.edit');
+    Route::put('/maklumat', [PengaturanController::class, 'updateMaklumat'])->name('maklumat.update');
+
+    // Struktur organisasi (bagan di halaman Profil)
+    Route::resource('struktur', StrukturOrganisasiController::class)
+        ->parameters(['struktur' => 'struktur'])
+        ->except(['show']);
 
     // Manajemen Halaman (CRUD)
     Route::resource('halaman', HalamanController::class)

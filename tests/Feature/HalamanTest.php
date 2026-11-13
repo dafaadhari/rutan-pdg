@@ -36,25 +36,44 @@ function dataForm(array $atribut = []): array
     ], $atribut);
 }
 
-it('menampilkan seluruh halaman bawaan dari seeder', function () {
+it('menampilkan seluruh halaman bawaan dari seeder sebagai seksi', function () {
     $this->seed(HalamanSeeder::class);
 
-    expect(Halaman::count())->toBe(26);
+    // Revisi Humas: 7 Tentang Kami, 3 Layanan, 5 Informasi Publik
+    expect(Halaman::count())->toBe(15)
+        ->and(Halaman::where('kategori', 'layanan')->urut()->pluck('slug')->all())
+        ->toBe(['jadwal-besuk', 'titipan-barang', 'program-integrasi']);
 
-    Halaman::all()->each(fn ($h) => $this->get($h->url)->assertOk()->assertSee($h->judul));
+    Halaman::all()->each(function ($h) {
+        expect($h->url)->toBe(route($h->kategori) . '#' . $h->slug);
+        $this->get(route($h->kategori))->assertOk()
+            ->assertSee('id="' . $h->slug . '"', false)
+            ->assertSee($h->judul);
+    });
 });
 
-it('menampilkan konten halaman dan menu dari database', function () {
+it('menampilkan semua halaman satu kategori dalam satu halaman dengan penanda gulir', function () {
     halaman();
-    halaman(['slug' => 'titipan-barang', 'judul' => 'Titipan Barang', 'urutan' => 2]);
+    halaman(['slug' => 'titipan-barang', 'judul' => 'Titipan Barang', 'urutan' => 2, 'konten' => '<p>Isi titipan.</p>']);
 
-    $this->get('/layanan/jadwal-besuk')
+    $html = $this->get('/layanan')
         ->assertOk()
         ->assertSee('Isi jadwal besuk.', false)
-        ->assertSee('Titipan Barang');
+        ->assertSee('Isi titipan.', false)
+        ->assertSee('data-seksi', false)
+        ->assertSee('data-penanda="titipan-barang"', false)
+        ->getContent();
 
-    // Tanpa slug menampilkan halaman pertama sesuai urutan
-    $this->get('/layanan')->assertOk()->assertSee('Isi jadwal besuk.', false);
+    // Seksi berurutan sesuai nomor urut
+    expect(strpos($html, 'id="jadwal-besuk"'))->toBeLessThan(strpos($html, 'id="titipan-barang"'));
+});
+
+it('mengalihkan tautan lama per halaman ke seksinya', function () {
+    halaman();
+
+    $this->get('/layanan/jadwal-besuk')
+        ->assertStatus(301)
+        ->assertRedirect(route('layanan') . '#jadwal-besuk');
 });
 
 it('menyembunyikan halaman draft dari publik dan menu', function () {
@@ -62,8 +81,9 @@ it('menyembunyikan halaman draft dari publik dan menu', function () {
     halaman(['slug' => 'rahasia', 'judul' => 'Halaman Rahasia', 'status' => 'draft']);
 
     $this->get('/layanan/rahasia')->assertNotFound();
-    $this->get('/layanan/jadwal-besuk')->assertOk()->assertDontSee('Halaman Rahasia');
+    $this->get('/layanan')->assertOk()->assertDontSee('Halaman Rahasia');
     $this->get('/layanan/tidak-ada')->assertNotFound();
+    $this->get('/informasi-publik')->assertNotFound();
 });
 
 it('menampilkan highlight layanan & informasi publik pilihan admin di beranda', function () {
@@ -72,7 +92,7 @@ it('menampilkan highlight layanan & informasi publik pilihan admin di beranda', 
     }
     halaman(['slug' => 'tersembunyi', 'judul' => 'Layanan Tersembunyi', 'urutan' => 0, 'tampil_di_beranda' => false]);
     halaman(['kategori' => 'informasi-publik', 'slug' => 'lakip', 'judul' => 'LAKIP', 'grup' => null]);
-    halaman(['kategori' => 'informasi-publik', 'slug' => 'dipa', 'judul' => 'DIPA', 'grup' => null, 'tampil_di_beranda' => false]);
+    halaman(['kategori' => 'informasi-publik', 'slug' => 'arsip', 'judul' => 'Arsip', 'grup' => null, 'tampil_di_beranda' => false]);
 
     $html = $this->get('/')
         ->assertOk()
@@ -84,15 +104,15 @@ it('menampilkan highlight layanan & informasi publik pilihan admin di beranda', 
     // Maks. 4 highlight layanan sesuai urutan; yang tidak dicentang tidak tampil
     $highlight = (string) str($html)->after('id="layanan"')->before('</section>');
     expect($highlight)
-        ->toContain(route('layanan', 'layanan-1'))
-        ->toContain(route('layanan', 'layanan-4'))
-        ->not->toContain(route('layanan', 'layanan-5'))
-        ->not->toContain(route('layanan', 'tersembunyi'));
+        ->toContain(route('layanan') . '#layanan-1"')
+        ->toContain(route('layanan') . '#layanan-4"')
+        ->not->toContain(route('layanan') . '#layanan-5"')
+        ->not->toContain(route('layanan') . '#tersembunyi"');
 
     $informasi = (string) str($html)->after('id="informasi-publik"')->before('</section>');
     expect($informasi)
-        ->toContain(route('informasi-publik', 'lakip'))
-        ->not->toContain(route('informasi-publik', 'dipa'));
+        ->toContain(route('informasi-publik') . '#lakip"')
+        ->not->toContain(route('informasi-publik') . '#arsip"');
 
     // Urutan: highlight layanan → berita → informasi publik → maklumat & pengaduan
     expect(strpos($html, 'id="layanan"'))->toBeLessThan(strpos($html, 'id="berita"'))
@@ -123,7 +143,7 @@ it('memungkinkan admin menambah halaman dengan slug otomatis', function () {
         ->and($halaman->slug)->toBe('layanan-baru')
         ->and($halaman->tampil_di_beranda)->toBeTrue();
 
-    $this->get('/layanan/layanan-baru')->assertOk()->assertSee('Konten layanan baru.', false);
+    $this->get('/layanan')->assertOk()->assertSee('Konten layanan baru.', false);
 });
 
 it('membuat slug unik per kategori', function () {
@@ -176,27 +196,25 @@ it('menampilkan halaman admin daftar, tambah, dan ubah', function () {
     $this->actingAs($admin)->get("/admin/halaman/{$halaman->id}/edit")->assertOk()->assertSee('Perbarui Halaman');
 });
 
-it('menampilkan maklumat pelayanan & saluran pengaduan di beranda', function () {
-    halaman(['slug' => 'pengaduan', 'judul' => 'Pengaduan']);
-
+it('menampilkan maklumat pelayanan & saluran pengaduan eksternal di beranda', function () {
     $html = $this->get('/')->assertOk()->assertDontSee('id="jadwal-kunjungan"', false)->getContent();
     $maklumat = (string) str($html)->after('id="maklumat"')->before('</section>');
 
     expect(strpos($html, 'id="maklumat"'))->toBeGreaterThan(strpos($html, 'id="berita"'))
         ->and($maklumat)
         ->toContain(e(config('rutan.maklumat.isi')))
-        ->toContain(route('layanan', 'pengaduan'))
         ->toContain('https://www.lapor.go.id')
+        ->toContain('https://wa.me/628111733390')
         ->toContain('Kotak Pengaduan')
-        // WhatsApp hanya tampil bila nomornya diisi di config
-        ->not->toContain('wa.me');
+        // Halaman pengaduan internal sudah dihapus
+        ->not->toContain('/layanan/pengaduan');
 });
 
 it('menampilkan jadwal kunjungan resmi di footer', function () {
     halaman();
 
     // Footer di halaman informasi memakai sumber jadwal dari config/rutan.php
-    $footer = (string) str($this->get('/layanan/jadwal-besuk')->getContent())->after('<footer');
+    $footer = (string) str($this->get('/layanan')->getContent())->after('<footer');
     expect($footer)
         ->toContain('Jadwal Kunjungan')
         ->toContain('Senin &amp; Rabu:')
@@ -237,4 +255,58 @@ it('membatasi ringkasan maksimal 120 karakter', function () {
 
     expect(Halaman::where('judul', 'Pas Batas')->exists())->toBeTrue()
         ->and(Halaman::where('judul', 'Terlalu Panjang')->exists())->toBeFalse();
+});
+
+it('merampingkan konten lama sesuai revisi Humas lewat migration', function () {
+    foreach ([
+        ['tentang-kami', 'unit-pelaksana-teknis', 'Unit Pelaksana Teknis'],
+        ['tentang-kami', 'profil-organisasi', 'Profil Organisasi'],
+        ['tentang-kami', 'profil-pejabat', 'Profil Pejabat'],
+        ['tentang-kami', 'kontak-kami', 'Kontak Kami'],
+        ['layanan', 'media-massa', 'Media Massa'],
+        ['layanan', 'pengaduan', 'Pengaduan'],
+        ['informasi-publik', 'dipa', 'DIPA'],
+        ['informasi-publik', 'lakip', 'LAKIP'],
+    ] as [$kategori, $slug, $judul]) {
+        halaman(['kategori' => $kategori, 'slug' => $slug, 'judul' => $judul, 'grup' => null]);
+    }
+    \App\Models\Berita::create(['judul' => 'Rilis', 'slug' => 'rilis', 'kategori' => 'rilis-pers', 'konten' => '<p>x</p>', 'status' => 'publikasi']);
+    User::factory()->create(['name' => 'Super Admin']);
+
+    (require database_path('migrations/2026_11_13_000001_revisi_humas_konten.php'))->up();
+
+    expect(Halaman::where('kategori', 'tentang-kami')->pluck('slug')->sort()->values()->all())
+        ->toBe(['kontak-kami', 'profil', 'visi-misi'])
+        ->and(Halaman::firstWhere('slug', 'profil')->judul)->toBe('Profil')
+        ->and(Halaman::firstWhere('slug', 'profil')->konten)->toContain('Tugas Pokok')
+        ->and(Halaman::firstWhere('slug', 'visi-misi')->konten)->not->toContain('Tugas Pokok')
+        ->and(Halaman::firstWhere('slug', 'kontak-kami')->konten)
+        ->toContain('rutanpandeglang@gmail.com')
+        ->not->toContain('Jadwal Pelayanan Kunjungan')
+        ->and(Halaman::where('kategori', 'layanan')->exists())->toBeFalse()
+        ->and(Halaman::where('kategori', 'informasi-publik')->pluck('slug')->all())->toBe(['lakip'])
+        ->and(\App\Models\Berita::first()->kategori)->toBe('kegiatan')
+        ->and(User::first()->name)->toBe('Humas');
+});
+
+it('tidak menautkan panel admin dari situs publik', function () {
+    halaman();
+
+    foreach (['/', '/layanan', '/berita'] as $url) {
+        $this->get($url)->assertOk()
+            ->assertDontSee('Akses Admin')
+            ->assertDontSee('href="' . route('login') . '"', false);
+    }
+
+    // Pengelola tetap bisa masuk lewat /admin
+    $this->get('/admin')->assertRedirect(route('login'));
+});
+
+it('menampilkan kontak resmi terbaru di topbar dan footer', function () {
+    halaman();
+
+    $this->get('/layanan')->assertOk()
+        ->assertSee('rutanpandeglang@gmail.com')
+        ->assertSee('08111733390')
+        ->assertSee('Jl. Raya Pandeglang 2');
 });

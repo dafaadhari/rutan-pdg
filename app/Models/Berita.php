@@ -16,7 +16,6 @@ class Berita extends Model
     public const KATEGORI = [
         'pengumuman' => 'Pengumuman',
         'kegiatan' => 'Kegiatan',
-        'rilis-pers' => 'Rilis Pers',
     ];
 
     protected $fillable = [

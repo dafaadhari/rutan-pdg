@@ -22,7 +22,7 @@
                         Humas Rutan Pandeglang
                     </p>
                     <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight">Berita &amp; kegiatan</h1>
-                    <p class="mt-3 max-w-2xl text-base text-navy-200">Pengumuman, rilis resmi, dan dokumentasi kegiatan pembinaan Warga Binaan.</p>
+                    <p class="mt-3 max-w-2xl text-base text-navy-200">Pengumuman dan dokumentasi kegiatan pembinaan Warga Binaan.</p>
                 </div>
 
                 <form action="{{ route('berita.index') }}" method="GET" role="search" class="w-full lg:w-96">

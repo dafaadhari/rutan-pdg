@@ -12,7 +12,7 @@
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold tracking-tight text-navy-950">Berita & Kegiatan</h1>
-            <p class="mt-1 text-sm text-gray-600">Kelola publikasi giat, pengumuman, dan rilis pers resmi Rutan Pandeglang.</p>
+            <p class="mt-1 text-sm text-gray-600">Kelola publikasi pengumuman dan kegiatan resmi Rutan Pandeglang.</p>
         </div>
         <a href="{{ route('admin.berita.create') }}"
            class="inline-flex items-center gap-2 self-start rounded-lg bg-emas-500 px-4 py-2.5 text-sm font-bold text-navy-950 shadow-sm hover:bg-emas-400 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 focus-visible:ring-offset-2 sm:self-auto">

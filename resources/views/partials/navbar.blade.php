@@ -1,6 +1,4 @@
 @php
-    $halamanPengaduan = $menuHalaman->get('layanan', collect())->firstWhere('slug', 'pengaduan');
-    $slugAktif = $currentSlug ?? request()->route('slug');
     $labelMenu = fn ($kategori, $label) => $kategori === 'layanan' ? 'Layanan' : $label;
     $kelasMenu = 'relative inline-flex items-center gap-1 px-3 py-2 rounded-md text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500';
     $kelasAktif = 'text-navy-950 after:absolute after:inset-x-3 after:-bottom-[17px] after:h-[3px] after:rounded-full after:bg-emas-500';
@@ -20,8 +18,8 @@
             @if($kontak['email'])
                 <a href="mailto:{{ $kontak['email'] }}" class="hover:text-white transition">{{ $kontak['email'] }}</a>
             @endif
-            @if($halamanPengaduan)
-                <a href="{{ route('layanan', 'pengaduan') }}" class="inline-flex items-center gap-1.5 font-semibold text-red-300 hover:text-red-200 transition">
+            @if($kontak['lapor'])
+                <a href="{{ $kontak['lapor'] }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 font-semibold text-red-300 hover:text-red-200 transition">
                     <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
                     Pengaduan
                 </a>
@@ -31,7 +29,7 @@
 </div>
 
 <!-- HEADER UTAMA: LOGO + NAVIGASI (Sticky) -->
-<header class="bg-white/95 backdrop-blur border-b border-gray-200 sticky top-0 z-50 shadow-[0_1px_0_0_rgba(6,13,29,0.05)]">
+<header data-header-sticky class="bg-white/95 backdrop-blur border-b border-gray-200 sticky top-0 z-50 shadow-[0_1px_0_0_rgba(6,13,29,0.05)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-4 h-[68px] lg:h-[72px]">
             <!-- Identitas -->
@@ -54,7 +52,7 @@
                     @php $itemMenu = $menuHalaman->get($kategori, collect()); @endphp
                     @continue($itemMenu->isEmpty())
                     {{-- Panel dropdown menempel di tepi kanan area menu agar tidak keluar layar --}}
-                    <div class="group">
+                    <div class="group" data-dropdown>
                         <button type="button" aria-haspopup="true"
                                 class="{{ $kelasMenu }} {{ request()->routeIs($kategori) ? $kelasAktif : $kelasPasif }}">
                             {{ $labelMenu($kategori, $labelKategori) }}
@@ -63,17 +61,41 @@
                             </svg>
                         </button>
 
+                        @php
+                            $banyak = $itemMenu->count() > 4;
+                            $deskripsi = \App\Models\Halaman::DESKRIPSI_KATEGORI[$kategori] ?? null;
+                        @endphp
                         <div class="absolute top-full right-0 z-50 pt-5 opacity-0 invisible translate-y-1 transition duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0">
-                            <div class="w-[36rem] rounded-xl bg-white p-2 shadow-xl shadow-navy-950/10 ring-1 ring-navy-950/[0.06]">
-                                <ul class="grid grid-cols-2 gap-0.5">
+                            <div class="flex {{ $banyak ? 'w-[46rem]' : 'w-[34rem]' }} overflow-hidden rounded-2xl bg-white shadow-2xl shadow-navy-950/15 ring-1 ring-navy-950/[0.06]">
+                                {{-- Pengantar menu --}}
+                                <div class="flex w-56 shrink-0 flex-col border-t-[3px] border-emas-500 bg-navy-950 p-5 text-white">
+                                    <p class="text-[11px] font-bold uppercase tracking-widest text-emas-400">Rutan Pandeglang</p>
+                                    <p class="mt-1.5 text-lg font-extrabold tracking-tight">{{ $labelMenu($kategori, $labelKategori) }}</p>
+                                    @if($deskripsi)
+                                        <p class="mt-2 text-[13px] leading-relaxed text-navy-200">{{ $deskripsi }}</p>
+                                    @endif
+                                    <a href="{{ route($kategori) }}"
+                                       class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-emas-300 transition hover:text-emas-200 focus:outline-none focus-visible:underline">
+                                        Buka halaman <x-panah />
+                                    </a>
+                                </div>
+
+                                {{-- Sub-bab --}}
+                                <ul class="grid flex-1 content-start gap-0.5 p-2.5 {{ $banyak ? 'grid-cols-2' : 'grid-cols-1' }}">
                                     @foreach ($itemMenu as $item)
-                                        @php $aktif = request()->routeIs($kategori) && $slugAktif === $item->slug; @endphp
                                         <li>
-                                            <a href="{{ route($kategori, $item->slug) }}" @if($aktif) aria-current="page" @endif
-                                               class="group/item relative flex items-center gap-3 rounded-md py-2.5 pl-4 pr-3 text-sm leading-snug transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 {{ $aktif ? 'bg-navy-50 font-semibold text-navy-950' : 'text-gray-700 hover:bg-navy-50/70 hover:text-navy-950' }}">
-                                                <span class="absolute inset-y-2 left-0 w-[3px] rounded-full bg-emas-500 transition-opacity duration-150 {{ $aktif ? 'opacity-100' : 'opacity-0 group-hover/item:opacity-100 group-focus-visible/item:opacity-100' }}" aria-hidden="true"></span>
-                                                <x-ikon :nama="$item->ikon" class="h-[18px] w-[18px] shrink-0 transition-colors {{ $aktif ? 'text-emas-600' : 'text-gray-400 group-hover/item:text-emas-600' }}" />
-                                                <span>{{ $item->judul }}</span>
+                                            {{-- Di halaman kategorinya sendiri, item ditandai sesuai seksi yang sedang dibaca --}}
+                                            <a href="{{ $item->url }}" @if(request()->routeIs($kategori)) data-penanda="{{ $item->slug }}" @endif
+                                               class="group/item flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-navy-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-500 data-aktif:bg-navy-50">
+                                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-50 text-navy-700 ring-1 ring-navy-100 transition-colors group-hover/item:bg-navy-950 group-hover/item:text-emas-400 group-hover/item:ring-navy-950 group-data-aktif/item:bg-navy-950 group-data-aktif/item:text-emas-400 group-data-aktif/item:ring-navy-950">
+                                                    <x-ikon :nama="$item->ikon" class="h-[18px] w-[18px]" />
+                                                </span>
+                                                <span class="min-w-0 pt-px">
+                                                    <span class="block text-sm font-semibold leading-snug text-navy-950">{{ $item->judul }}</span>
+                                                    @if($item->ringkasan)
+                                                        <span class="mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2">{{ $item->ringkasan }}</span>
+                                                    @endif
+                                                </span>
                                             </a>
                                         </li>
                                     @endforeach
@@ -117,9 +139,8 @@
                     </summary>
                     <div class="ml-3 pl-3 border-l-2 border-emas-400/60 py-1 space-y-0.5">
                         @foreach ($itemMenu as $item)
-                            @php $aktif = request()->routeIs($kategori) && $slugAktif === $item->slug; @endphp
-                            <a href="{{ route($kategori, $item->slug) }}" @if($aktif) aria-current="page" @endif
-                               class="block px-3 py-2 rounded-md text-sm {{ $aktif ? 'bg-navy-50 text-navy-950 font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-navy-950' }}">{{ $item->judul }}</a>
+                            <a href="{{ $item->url }}" @if(request()->routeIs($kategori)) data-penanda="{{ $item->slug }}" @endif
+                               class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-navy-950 data-aktif:bg-navy-50 data-aktif:font-semibold data-aktif:text-navy-950">{{ $item->judul }}</a>
                         @endforeach
                     </div>
                 </details>
@@ -129,9 +150,9 @@
                 Berita
             </a>
 
-            @if($halamanPengaduan)
-                <a href="{{ route('layanan', 'pengaduan') }}" class="mt-2 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-700">
-                    Sampaikan Pengaduan
+            @if($kontak['lapor'])
+                <a href="{{ $kontak['lapor'] }}" target="_blank" rel="noopener" class="mt-2 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-700">
+                    Sampaikan Pengaduan (SP4N-LAPOR!) <x-panah arah="serong" />
                 </a>
             @endif
         </nav>
@@ -144,12 +165,26 @@
         const menu = document.getElementById('mobile-menu');
         if (!tombol || !menu) return;
 
-        tombol.addEventListener('click', function () {
-            const terbuka = menu.classList.toggle('hidden') === false;
+        function atur(terbuka) {
+            menu.classList.toggle('hidden', !terbuka);
             document.getElementById('hamburger-icon').classList.toggle('hidden', terbuka);
             document.getElementById('close-icon').classList.toggle('hidden', !terbuka);
             tombol.setAttribute('aria-expanded', terbuka ? 'true' : 'false');
             tombol.setAttribute('aria-label', terbuka ? 'Tutup menu navigasi' : 'Buka menu navigasi');
+        }
+
+        tombol.addEventListener('click', function () {
+            atur(menu.classList.contains('hidden'));
+        });
+
+        // Sub-bab berupa tautan ke seksi: tutup menu setelah dipilih agar seksinya terlihat
+        menu.querySelectorAll('a[href*="#"]').forEach(function (a) {
+            a.addEventListener('click', function () { atur(false); });
+        });
+
+        // Dropdown desktop: lepas fokus setelah memilih agar panel menutup
+        document.querySelectorAll('[data-dropdown] a').forEach(function (a) {
+            a.addEventListener('click', function () { a.blur(); });
         });
     })();
 </script>

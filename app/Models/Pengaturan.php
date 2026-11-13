@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Pengaturan portal berbentuk key-value (nilai disimpan sebagai JSON).
- * Kunci yang dipakai: 'sambutan', 'pengumuman'.
+ * Kunci yang dipakai: 'sambutan', 'pengumuman', 'maklumat'.
  */
 class Pengaturan extends Model
 {
@@ -23,16 +23,25 @@ class Pengaturan extends Model
     ];
 
     /**
-     * Nilai bawaan banner pengumuman (semua halaman publik).
+     * Nilai bawaan pop-up pengumuman (tampil sekali bagi pengunjung yang baru masuk).
      */
     public const BAWAAN_PENGUMUMAN = [
         'aktif' => false,
         'tingkat' => 'penting',
+        'judul' => '',
         'teks' => '',
         'tautan' => null,
         'label_tautan' => 'Selengkapnya',
         'mulai' => null,
         'selesai' => null,
+    ];
+
+    /**
+     * Nilai bawaan foto Maklumat Pelayanan (beranda, bisa diperbesar).
+     */
+    public const BAWAAN_MAKLUMAT = [
+        'gambar' => null,
+        'keterangan' => '',
     ];
 
     /**
@@ -42,6 +51,15 @@ class Pengaturan extends Model
         'info' => 'Informasi',
         'penting' => 'Penting',
         'darurat' => 'Darurat',
+    ];
+
+    /**
+     * Kelas warna pop-up per tingkat: [garis aksen, lencana]. Dipakai pop-up publik & pratinjau admin.
+     */
+    public const GAYA_PENGUMUMAN = [
+        'info' => ['bg-navy-800', 'bg-navy-100 text-navy-800'],
+        'penting' => ['bg-emas-500', 'bg-emas-100 text-emas-800'],
+        'darurat' => ['bg-red-600', 'bg-red-100 text-red-700'],
     ];
 
     protected $table = 'pengaturans';

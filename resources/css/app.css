@@ -7,6 +7,8 @@
 
 /* Varian "ciut:" — aktif saat sidebar admin diciutkan (kelas .sidebar-ciut di <html>) */
 @custom-variant ciut (&:where(.sidebar-ciut, .sidebar-ciut *));
+/* Varian "intip:" — sidebar ciut sedang dilebarkan sementara karena disorot kursor */
+@custom-variant intip (&:where(.sidebar-intip, .sidebar-intip *));
 
 @theme {
     /* Plus Jakarta Sans di-self-host via laravel-vite-plugin (directive @fonts) */
@@ -129,6 +131,83 @@
     }
 
     .konten-halaman strong:not([class]) { color: var(--color-navy-950); }
+
+    /*
+     * Bagan struktur organisasi (components/bagan-organisasi).
+     * HP: daftar bertingkat dengan garis kiri. md+: bagan berjenjang dengan garis penghubung.
+     */
+    .bagan ul { list-style: none; margin: 0; padding: 0; }
+    .bagan li { position: relative; }
+
+    .bagan-kartu {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border: 1px solid var(--color-gray-200);
+        border-radius: 0.875rem;
+        background: #fff;
+        padding: 0.75rem;
+        box-shadow: 0 1px 2px rgb(6 13 29 / 0.05);
+    }
+
+    .bagan-kartu-akar {
+        border-color: var(--color-navy-950);
+        background: var(--color-navy-950);
+        box-shadow: inset 0 -3px 0 var(--color-emas-500);
+    }
+
+    @media (max-width: 767.98px) {
+        .bagan li { padding-top: 0.75rem; }
+        .bagan > ul > li:first-child { padding-top: 0; }
+        .bagan ul ul { margin-left: 1.5rem; padding-left: 1rem; border-left: 2px solid var(--color-gray-200); }
+        .bagan ul ul > li::before {
+            content: '';
+            position: absolute;
+            left: -1rem;
+            top: calc(0.75rem + 2.375rem);
+            width: 1rem;
+            border-top: 2px solid var(--color-gray-200);
+        }
+    }
+
+    @media (min-width: 768px) {
+        .bagan > ul { display: flex; justify-content: center; min-width: max-content; margin-inline: auto; }
+        .bagan ul ul { display: flex; justify-content: center; position: relative; padding-top: 1.5rem; }
+        .bagan li { display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0.5rem 0; }
+        .bagan > ul > li { padding-top: 0; }
+
+        .bagan-kartu { width: 11.5rem; flex-direction: column; text-align: center; padding: 1rem 0.875rem; }
+
+        /* Garis horizontal antarsaudara + garis turun ke kartu */
+        .bagan ul ul > li::before,
+        .bagan ul ul > li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            width: 50%;
+            height: 1.5rem;
+            border-top: 2px solid var(--color-gray-300);
+        }
+        .bagan ul ul > li::after { right: auto; left: 50%; border-left: 2px solid var(--color-gray-300); }
+        .bagan ul ul > li:only-child { padding-top: 0; }
+        .bagan ul ul > li:only-child::before,
+        .bagan ul ul > li:only-child::after { display: none; }
+        .bagan ul ul > li:first-child::before,
+        .bagan ul ul > li:last-child::after { border: 0 none; }
+        .bagan ul ul > li:last-child::before { border-right: 2px solid var(--color-gray-300); border-top-right-radius: 6px; }
+        .bagan ul ul > li:first-child::after { border-top-left-radius: 6px; }
+
+        /* Garis turun dari atasan */
+        .bagan ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            height: 1.5rem;
+            border-left: 2px solid var(--color-gray-300);
+        }
+    }
 }
 
 /*
@@ -144,3 +223,14 @@
 .konten-halaman :is(.bg-gray-900, .bg-gray-950) { background-color: var(--color-navy-950); }
 .konten-halaman .bg-gray-50 { background-color: var(--color-navy-50); }
 .konten-halaman .border-red-600 { border-color: var(--color-emas-500); }
+
+/* Scrollbar sidebar admin: tipis & senada navy, hanya tampak saat sidebar disorot */
+.sidebar-gulir {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    scrollbar-gutter: stable;
+}
+.sidebar-gulir:hover,
+.sidebar-gulir:focus-within {
+    scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+}

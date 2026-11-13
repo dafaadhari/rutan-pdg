@@ -18,7 +18,12 @@ class PengaturanController extends Controller
     public const FOTO_TINGGI = 1000;
 
     /**
-     * Status banner pengumuman: aktif | terjadwal | kedaluwarsa | nonaktif.
+     * Sisi terpanjang foto maklumat (cukup tajam saat diperbesar).
+     */
+    public const MAKLUMAT_MAKS = 2400;
+
+    /**
+     * Status pop-up pengumuman: aktif | terjadwal | kedaluwarsa | nonaktif.
      */
     public static function statusPengumuman(array $pengumuman): string
     {
@@ -40,7 +45,7 @@ class PengaturanController extends Controller
     }
 
     /**
-     * Form banner pengumuman.
+     * Form pop-up pengumuman.
      */
     public function editPengumuman()
     {
@@ -53,21 +58,23 @@ class PengaturanController extends Controller
     }
 
     /**
-     * Simpan banner pengumuman.
+     * Simpan pop-up pengumuman.
      */
     public function updatePengumuman(Request $request)
     {
         $validated = $request->validate([
             'tingkat' => ['required', Rule::in(array_keys(Pengaturan::TINGKAT_PENGUMUMAN))],
-            'teks' => [Rule::requiredIf($request->boolean('aktif')), 'nullable', 'string', 'max:200'],
+            'judul' => ['nullable', 'string', 'max:80'],
+            'teks' => [Rule::requiredIf($request->boolean('aktif')), 'nullable', 'string', 'max:300'],
             'tautan' => ['nullable', 'string', 'max:255', 'regex:/^(https?:\/\/|\/)/'],
             'label_tautan' => ['nullable', 'string', 'max:30'],
             'mulai' => ['nullable', 'date'],
             'selesai' => ['nullable', 'date', 'after_or_equal:mulai'],
         ], [
             'tingkat.in' => 'Tingkat pengumuman tidak valid.',
-            'teks.required' => 'Teks pengumuman wajib diisi bila banner diaktifkan.',
-            'teks.max' => 'Teks pengumuman maksimal 200 karakter agar tetap ringkas.',
+            'judul.max' => 'Judul pengumuman maksimal 80 karakter.',
+            'teks.required' => 'Teks pengumuman wajib diisi bila pop-up diaktifkan.',
+            'teks.max' => 'Teks pengumuman maksimal 300 karakter agar tetap ringkas.',
             'tautan.regex' => 'Tautan harus diawali "/" (halaman portal) atau "https://".',
             'label_tautan.max' => 'Label tautan maksimal 30 karakter.',
             'selesai.after_or_equal' => 'Tanggal berakhir tidak boleh sebelum tanggal mulai.',
@@ -76,6 +83,7 @@ class PengaturanController extends Controller
         Pengaturan::simpan('pengumuman', [
             'aktif' => $request->boolean('aktif'),
             'tingkat' => $validated['tingkat'],
+            'judul' => $validated['judul'] ?? '',
             'teks' => $validated['teks'] ?? '',
             'tautan' => $validated['tautan'] ?? null,
             'label_tautan' => $validated['label_tautan'] ?: 'Selengkapnya',
@@ -84,7 +92,54 @@ class PengaturanController extends Controller
         ]);
 
         return redirect()->route('admin.pengumuman.edit')
-            ->with('success', 'Banner pengumuman berhasil diperbarui!');
+            ->with('success', 'Pop-up pengumuman berhasil diperbarui!');
+    }
+
+    /**
+     * Form foto Maklumat Pelayanan.
+     */
+    public function editMaklumat()
+    {
+        return view('admin.pengaturan.maklumat', [
+            'maklumat' => Pengaturan::ambil('maklumat', Pengaturan::BAWAAN_MAKLUMAT),
+            'maklumatTeks' => config('rutan.maklumat'),
+        ]);
+    }
+
+    /**
+     * Simpan foto Maklumat Pelayanan (diperkecil tanpa dipotong, disimpan WebP).
+     */
+    public function updateMaklumat(Request $request)
+    {
+        $validated = $request->validate([
+            'gambar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:8192', 'dimensions:min_width=600,min_height=600'],
+            'keterangan' => ['nullable', 'string', 'max:160'],
+        ], [
+            'gambar.image' => 'Berkas harus berupa gambar.',
+            'gambar.mimes' => 'Format yang didukung: JPG, JPEG, PNG, WEBP.',
+            'gambar.max' => 'Ukuran gambar maksimal 8 MB.',
+            'gambar.dimensions' => 'Resolusi gambar minimal 600 × 600 piksel agar teks maklumat tetap terbaca.',
+            'keterangan.max' => 'Keterangan maksimal 160 karakter.',
+        ]);
+
+        $lama = Pengaturan::ambil('maklumat', Pengaturan::BAWAAN_MAKLUMAT);
+        $gambar = $lama['gambar'] ?? null;
+
+        if ($request->hasFile('gambar')) {
+            $gambar = Gambar::perkecilDanSimpan($request->file('gambar'), 'maklumat', self::MAKLUMAT_MAKS);
+            Gambar::hapus($lama['gambar'] ?? null);
+        } elseif ($request->boolean('hapus_gambar')) {
+            Gambar::hapus($gambar);
+            $gambar = null;
+        }
+
+        Pengaturan::simpan('maklumat', [
+            'gambar' => $gambar,
+            'keterangan' => $validated['keterangan'] ?? '',
+        ]);
+
+        return redirect()->route('admin.maklumat.edit')
+            ->with('success', 'Maklumat Pelayanan berhasil diperbarui!');
     }
 
     /**

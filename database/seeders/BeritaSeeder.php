@@ -18,7 +18,7 @@ class BeritaSeeder extends Seeder
             [
                 'judul' => 'Pengarahan Karutan Mengenai Peningkatan Kinerja dan Pelayanan Publik PASTI',
                 'slug' => Str::slug('Pengarahan Karutan Mengenai Peningkatan Kinerja dan Pelayanan Publik PASTI'),
-                'kategori' => 'rilis-pers',
+                'kategori' => 'kegiatan',
                 'konten' => '<p>Pandeglang — Kepala Rumah Tahanan Negara Kelas IIB Pandeglang memberikan pengarahan kepada seluruh jajaran pegawai dalam rangka memperkuat komitmen pelayanan publik yang transparan, akuntabel, dan berintegritas tinggi.</p><p>Karutan menegaskan pentingnya implementasi nilai PASTI (Profesional, Akuntabel, Sinergi, Transparan, dan Inovatif) dalam menjalankan tugas sehari-hari demi menciptakan lingkungan Pemasyarakatan yang aman dan tertib.</p>',
                                 'status' => 'publikasi',
                 'created_at' => now()->subHours(2),

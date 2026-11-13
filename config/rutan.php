@@ -46,7 +46,7 @@ return [
     |
     | Dipakai di topbar, footer, dan kotak pengaduan. Nilai null berarti
     | belum tersedia sehingga elemennya tidak ditampilkan.
-    | whatsapp_pengaduan ditulis format internasional tanpa tanda +,
+    | whatsapp_humas ditulis format internasional tanpa tanda +,
     | contoh: 6281234567890.
     |
     */
@@ -88,10 +88,13 @@ return [
     ],
 
     'kontak' => [
-        'alamat' => 'Jl. Raya Pandeglang - Serang, Pandeglang, Banten',
-        'telepon' => '(0253) 201234',
-        'email' => 'info@rutanpandeglang.go.id',
-        'whatsapp_pengaduan' => null,
+        'alamat' => 'Jl. Raya Pandeglang 2, Pandeglang, Banten',
+        'telepon' => '08111733390',
+        'email' => 'rutanpandeglang@gmail.com',
+        // Format internasional tanpa tanda + (untuk tautan wa.me)
+        'whatsapp_humas' => '628111733390',
+        // Saluran aduan resmi nasional (pengganti halaman pengaduan internal)
+        'lapor' => 'https://www.lapor.go.id',
         'peta' => null,
         'sosial' => [
             'instagram' => null,

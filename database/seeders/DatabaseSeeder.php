@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             BeritaSeeder::class,
             HalamanSeeder::class,
             PengaturanSeeder::class,
+            StrukturOrganisasiSeeder::class,
         ]);
     }
 }

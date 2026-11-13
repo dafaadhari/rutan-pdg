@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use RuntimeException;
 
 /**
- * Pengolah gambar unggahan: potong tengah sesuai rasio, perkecil, dan simpan sebagai WebP.
+ * Pengolah gambar unggahan: potong tengah sesuai rasio (atau perkecil utuh), lalu simpan sebagai WebP.
  * Memakai ekstensi GD bawaan PHP (tanpa paket tambahan, aman untuk shared hosting).
  */
 class Gambar
@@ -48,6 +48,36 @@ class Gambar
         imagefill($hasil, 0, 0, imagecolorallocate($hasil, 255, 255, 255));
         imagecopyresampled($hasil, $asli, 0, 0, $x, $y, $lebarAkhir, $tinggiAkhir, $potongLebar, $potongTinggi);
 
+        return self::simpanWebp($asli, $hasil, $folder);
+    }
+
+    /**
+     * Perkecil tanpa memotong (rasio asli dipertahankan) hingga sisi terpanjang <= $maks,
+     * lalu simpan sebagai WebP di disk "public". Cocok untuk dokumen/poster yang harus utuh.
+     */
+    public static function perkecilDanSimpan(UploadedFile|string $sumber, string $folder, int $maks): string
+    {
+        $path = $sumber instanceof UploadedFile ? $sumber->getRealPath() : $sumber;
+        $asli = self::baca($path);
+
+        $lebarAsli = imagesx($asli);
+        $tinggiAsli = imagesy($asli);
+        $skala = min(1, $maks / max($lebarAsli, $tinggiAsli));
+        $lebarAkhir = max(1, (int) round($lebarAsli * $skala));
+        $tinggiAkhir = max(1, (int) round($tinggiAsli * $skala));
+
+        $hasil = imagecreatetruecolor($lebarAkhir, $tinggiAkhir);
+        imagefill($hasil, 0, 0, imagecolorallocate($hasil, 255, 255, 255));
+        imagecopyresampled($hasil, $asli, 0, 0, 0, 0, $lebarAkhir, $tinggiAkhir, $lebarAsli, $tinggiAsli);
+
+        return self::simpanWebp($asli, $hasil, $folder);
+    }
+
+    /**
+     * Encode WebP, simpan ke disk "public" dengan nama acak, dan bebaskan memori GD.
+     */
+    protected static function simpanWebp(\GdImage $asli, \GdImage $hasil, string $folder): string
+    {
         ob_start();
         imagewebp($hasil, null, self::KUALITAS_WEBP);
         $data = ob_get_clean();

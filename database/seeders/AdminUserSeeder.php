@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Hash;
 class AdminUserSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Satu-satunya akun pengelola portal: Humas.
      */
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@rutan.go.id'],
+            ['email' => 'admin@rutanpandeglang.go.id'],
             [
-                'name' => 'Humas Rutan Pandeglang',
+                'name' => 'Humas',
                 'password' => Hash::make('password'),
             ]
         );

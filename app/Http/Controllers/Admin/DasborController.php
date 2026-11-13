@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Models\Berita;
 use App\Models\Halaman;
 use App\Models\Pengaturan;
+use App\Models\StrukturOrganisasi;
 
 class DasborController extends Controller
 {
@@ -49,6 +50,16 @@ class DasborController extends Controller
                 'teks' => 'Foto Kepala Rutan belum diunggah',
                 'url' => route('admin.sambutan.edit'),
                 'aksi' => 'Unggah foto',
+            ] : null,
+            empty(Pengaturan::ambil('maklumat', Pengaturan::BAWAAN_MAKLUMAT)['gambar']) ? [
+                'teks' => 'Foto Maklumat Pelayanan resmi belum diunggah (beranda masih menampilkan teks bawaan)',
+                'url' => route('admin.maklumat.edit'),
+                'aksi' => 'Unggah maklumat',
+            ] : null,
+            ($jabatanKosong = StrukturOrganisasi::whereNull('nama')->count()) > 0 ? [
+                'teks' => "{$jabatanKosong} jabatan di struktur organisasi belum diisi nama pejabatnya",
+                'url' => route('admin.struktur.index'),
+                'aksi' => 'Lengkapi struktur',
             ] : null,
         ]));
 

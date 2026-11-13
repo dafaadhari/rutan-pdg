@@ -5,7 +5,7 @@
     $judulHalaman = $ambil('judul');
     $judulLengkap = $judulHalaman ? "{$judulHalaman} - {$namaSitus}" : "{$namaSitus} - Kementerian Imigrasi dan Pemasyarakatan RI";
     $deskripsi = $ambil('deskripsi')
-        ?: 'Portal informasi resmi Rumah Tahanan Negara Kelas IIB Pandeglang: jadwal kunjungan, layanan publik, pengaduan, informasi publik, dan berita kegiatan.';
+        ?: 'Portal informasi resmi Rumah Tahanan Negara Kelas IIB Pandeglang: jadwal kunjungan, layanan publik, informasi publik, dan berita kegiatan.';
     $gambarOg = $ambil('og_image') ?: \App\Support\Aset::ogDefault();
     $logo = \App\Support\Aset::logo();
 @endphp
@@ -46,10 +46,6 @@
         Lewati ke konten
     </a>
 
-    @if($pengumumanAktif ?? null)
-        @include('partials.pengumuman', ['pengumuman' => $pengumumanAktif])
-    @endif
-
     @include('partials.navbar')
 
     <main id="konten" class="flex-grow">
@@ -57,6 +53,11 @@
     </main>
 
     @include('partials.footer')
+
+    {{-- Pop-up pengumuman (sekali per pengunjung, diatur di admin) --}}
+    @if($pengumumanAktif ?? null)
+        @include('partials.pengumuman', ['pengumuman' => $pengumumanAktif])
+    @endif
 
     @stack('scripts')
 </body>

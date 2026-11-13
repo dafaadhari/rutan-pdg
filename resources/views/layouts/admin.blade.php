@@ -1,12 +1,21 @@
 @php
+    // Menu dikelompokkan: judul grup => daftar menu (grup null = tanpa judul)
     $menuAdmin = [
-        ['route' => 'admin.dashboard', 'aktif' => 'admin.dashboard', 'label' => 'Dasbor', 'ikon' => 'grafik'],
-        ['route' => 'admin.berita.index', 'aktif' => 'admin.berita.*', 'label' => 'Berita', 'ikon' => 'buku'],
-        ['route' => 'admin.halaman.index', 'aktif' => 'admin.halaman.*', 'label' => 'Halaman', 'ikon' => 'dokumen'],
-        ['route' => 'admin.pengumuman.edit', 'aktif' => 'admin.pengumuman.*', 'label' => 'Pengumuman', 'ikon' => 'megafon'],
-        ['route' => 'admin.sambutan.edit', 'aktif' => 'admin.sambutan.*', 'label' => 'Sambutan Pimpinan', 'ikon' => 'pengguna'],
+        null => [
+            ['route' => 'admin.dashboard', 'aktif' => 'admin.dashboard', 'label' => 'Dasbor', 'ikon' => 'grafik'],
+        ],
+        'Konten' => [
+            ['route' => 'admin.berita.index', 'aktif' => 'admin.berita.*', 'label' => 'Berita', 'ikon' => 'buku'],
+            ['route' => 'admin.halaman.index', 'aktif' => 'admin.halaman.*', 'label' => 'Halaman', 'ikon' => 'dokumen'],
+            ['route' => 'admin.struktur.index', 'aktif' => 'admin.struktur.*', 'label' => 'Struktur Organisasi', 'ikon' => 'bagan'],
+        ],
+        'Beranda' => [
+            ['route' => 'admin.pengumuman.edit', 'aktif' => 'admin.pengumuman.*', 'label' => 'Pop-up Pengumuman', 'ikon' => 'megafon'],
+            ['route' => 'admin.maklumat.edit', 'aktif' => 'admin.maklumat.*', 'label' => 'Maklumat Pelayanan', 'ikon' => 'ceklis'],
+            ['route' => 'admin.sambutan.edit', 'aktif' => 'admin.sambutan.*', 'label' => 'Sambutan Pimpinan', 'ikon' => 'pengguna'],
+        ],
     ];
-    $namaAdmin = Auth::user()->name ?? 'Admin Humas';
+    $namaAdmin = Auth::user()->name ?? 'Humas';
     // Teks yang disembunyikan saat sidebar diciutkan (desktop); tetap terbaca pembaca layar
     $labelCiut = 'whitespace-nowrap lg:ciut:sr-only';
 @endphp
@@ -29,7 +38,7 @@
 
     <!-- SIDEBAR -->
     <aside id="sidebar-admin" aria-label="Menu admin"
-           class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col overflow-hidden bg-navy-950 text-navy-200 transition-[width,transform] duration-300 ease-in-out lg:translate-x-0 lg:ciut:w-[72px]">
+           class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col overflow-hidden bg-navy-950 text-navy-200 transition-[width,transform,box-shadow] duration-300 ease-in-out lg:translate-x-0 lg:ciut:w-[72px] lg:intip:shadow-2xl lg:intip:shadow-navy-950/40">
 
         <!-- Kepala sidebar: tombol hamburger + identitas -->
         <div class="flex h-16 shrink-0 items-center gap-2 border-b border-white/10 px-3 lg:ciut:justify-center lg:ciut:px-0">
@@ -46,23 +55,30 @@
             </a>
         </div>
 
-        <nav class="flex-1 space-y-1 overflow-y-auto overflow-x-hidden px-3 py-5">
-            <p class="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-navy-400 {{ $labelCiut }}">Kelola</p>
-            @foreach ($menuAdmin as $menu)
-                @php $aktif = request()->routeIs($menu['aktif']); @endphp
-                <a href="{{ route($menu['route']) }}" @if($aktif) aria-current="page" @endif title="{{ $menu['label'] }}"
-                   class="relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-400 lg:ciut:justify-center lg:ciut:px-0 {{ $aktif ? 'bg-white/10 text-white' : 'hover:bg-white/5 hover:text-white' }}">
-                    @if($aktif)
-                        <span class="absolute inset-y-2 left-0 w-1 rounded-r bg-emas-400" aria-hidden="true"></span>
-                    @endif
-                    <x-ikon :nama="$menu['ikon']" class="w-5 h-5 shrink-0 {{ $aktif ? 'text-emas-400' : 'text-navy-400' }}" />
-                    <span class="{{ $labelCiut }}">{{ $menu['label'] }}</span>
-                </a>
+        <nav class="sidebar-gulir flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-3 py-4">
+            @foreach ($menuAdmin as $grup => $daftarMenu)
+                @if($grup)
+                    <p class="mt-4 px-3 pb-1.5 text-[11px] font-bold uppercase tracking-wider text-navy-400 {{ $labelCiut }}">{{ $grup }}</p>
+                    <div class="mx-3 mt-3 mb-2 hidden border-t border-white/10 lg:ciut:block" aria-hidden="true"></div>
+                @endif
+                <div class="space-y-0.5">
+                    @foreach ($daftarMenu as $menu)
+                        @php $aktif = request()->routeIs($menu['aktif']); @endphp
+                        <a href="{{ route($menu['route']) }}" @if($aktif) aria-current="page" @endif title="{{ $menu['label'] }}"
+                           class="relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emas-400 lg:ciut:justify-center lg:ciut:px-0 {{ $aktif ? 'bg-white/10 text-white' : 'hover:bg-white/5 hover:text-white' }}">
+                            @if($aktif)
+                                <span class="absolute inset-y-1.5 left-0 w-1 rounded-r bg-emas-400" aria-hidden="true"></span>
+                            @endif
+                            <x-ikon :nama="$menu['ikon']" class="w-5 h-5 shrink-0 {{ $aktif ? 'text-emas-400' : 'text-navy-400' }}" />
+                            <span class="{{ $labelCiut }}">{{ $menu['label'] }}</span>
+                        </a>
+                    @endforeach
+                </div>
             @endforeach
 
             <div class="my-4 border-t border-white/10"></div>
             <a href="{{ url('/') }}" target="_blank" rel="noopener" title="Lihat portal publik"
-               class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-white/5 hover:text-white transition lg:ciut:justify-center lg:ciut:px-0">
+               class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/5 hover:text-white transition lg:ciut:justify-center lg:ciut:px-0">
                 <x-ikon nama="gedung" class="w-5 h-5 shrink-0 text-navy-400" />
                 <span class="{{ $labelCiut }}">Lihat portal publik</span>
                 <x-panah arah="serong" class="ml-auto h-4 w-4 text-navy-400 lg:ciut:hidden" />
@@ -88,7 +104,7 @@
     </aside>
     <div id="latar-sidebar" class="fixed inset-0 z-40 hidden bg-navy-950/60 lg:hidden" aria-hidden="true"></div>
 
-    <div class="flex min-h-screen flex-col transition-[padding] duration-300 ease-in-out lg:pl-64 lg:ciut:pl-[72px]">
+    <div class="flex min-h-screen flex-col transition-[padding] duration-300 ease-in-out lg:pl-64 lg:ciut:pl-[72px] lg:intip:pl-[72px]">
         <!-- BAR ATAS -->
         <header class="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur">
             <div class="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
@@ -146,25 +162,50 @@
                 tombolBuka.setAttribute('aria-expanded', buka ? 'true' : 'false');
             }
 
-            // Desktop: ciutkan / lebarkan sidebar, status diingat di browser
-            function perbaruiLabel() {
-                const ciut = html.classList.contains('sidebar-ciut');
-                tombolCiut.setAttribute('aria-expanded', ciut ? 'false' : 'true');
-                tombolCiut.setAttribute('aria-label', desktop.matches ? (ciut ? 'Lebarkan menu' : 'Ciutkan menu') : 'Tutup menu');
+            // Desktop: ciutkan / lebarkan sidebar, status diingat di browser.
+            // Saat ciut, menyorot sidebar dengan kursor melebarkannya sementara ("intip") tanpa menggeser konten.
+            let ciut = html.classList.contains('sidebar-ciut');
+            let intip = false;
+            let timerIntip = null;
+
+            function terapkan() {
+                html.classList.toggle('sidebar-ciut', ciut && !intip);
+                html.classList.toggle('sidebar-intip', ciut && intip);
+                tombolCiut.setAttribute('aria-expanded', ciut && !intip ? 'false' : 'true');
+                tombolCiut.setAttribute('aria-label', desktop.matches ? (ciut ? 'Kunci menu tetap lebar' : 'Ciutkan menu') : 'Tutup menu');
             }
+
+            function aturIntip(nilai) {
+                clearTimeout(timerIntip);
+                if (!desktop.matches || !ciut) { intip = false; terapkan(); return; }
+                // Jeda kecil agar sidebar tidak terbuka saat kursor hanya melintas
+                timerIntip = setTimeout(function () { intip = nilai; terapkan(); }, nilai ? 120 : 200);
+            }
+
+            sidebar.addEventListener('mouseenter', function () { aturIntip(true); });
+            sidebar.addEventListener('mouseleave', function () { aturIntip(false); });
+            sidebar.addEventListener('focusin', function () { if (ciut && desktop.matches) { intip = true; terapkan(); } });
+            sidebar.addEventListener('focusout', function (e) { if (!sidebar.contains(e.relatedTarget)) aturIntip(false); });
 
             tombolCiut.addEventListener('click', function () {
                 if (!desktop.matches) { aturOverlay(false); return; }
-                const ciut = html.classList.toggle('sidebar-ciut');
+                clearTimeout(timerIntip);
+                ciut = !ciut;
+                intip = false;
                 try { localStorage.setItem('sidebar-admin', ciut ? 'ciut' : 'lebar'); } catch (e) {}
-                perbaruiLabel();
+                terapkan();
+            });
+
+            // Layar kecil: menutup overlay setelah memilih menu
+            sidebar.querySelectorAll('nav a').forEach(function (a) {
+                a.addEventListener('click', function () { if (!desktop.matches) aturOverlay(false); });
             });
 
             tombolBuka.addEventListener('click', function () { aturOverlay(true); });
             latar.addEventListener('click', function () { aturOverlay(false); });
             document.addEventListener('keydown', function (e) { if (e.key === 'Escape') aturOverlay(false); });
-            desktop.addEventListener('change', perbaruiLabel);
-            perbaruiLabel();
+            desktop.addEventListener('change', function () { intip = false; terapkan(); });
+            terapkan();
         })();
     </script>
     @stack('scripts')

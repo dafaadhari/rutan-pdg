@@ -10,10 +10,24 @@ class Halaman extends Model
      * Kategori halaman: slug route => label tampilan.
      */
     public const KATEGORI = [
-        'tentang-kami' => 'Tentang Kami',
+        'tentang-kami' => 'Profil',
         'layanan' => 'Layanan Publik',
         'informasi-publik' => 'Informasi Publik',
     ];
+
+    /**
+     * Deskripsi singkat di kepala halaman tiap kategori.
+     */
+    public const DESKRIPSI_KATEGORI = [
+        'tentang-kami' => 'Kedudukan, sejarah, visi misi, dan susunan organisasi Rumah Tahanan Negara Kelas IIB Pandeglang.',
+        'layanan' => 'Informasi layanan kunjungan, penitipan barang, dan program integrasi bagi keluarga Warga Binaan.',
+        'informasi-publik' => 'Dokumen perencanaan dan akuntabilitas kinerja Rumah Tahanan Negara Kelas IIB Pandeglang.',
+    ];
+
+    /**
+     * Seksi yang menampilkan bagan dari data Struktur Organisasi (dikelola di admin).
+     */
+    public const SLUG_STRUKTUR = 'struktur-organisasi';
 
     protected $table = 'halamans';
 
@@ -55,11 +69,11 @@ class Halaman extends Model
     }
 
     /**
-     * URL publik halaman (nama route = slug kategori).
+     * URL publik halaman: seksi di halaman kategorinya (nama route = slug kategori).
      */
     public function getUrlAttribute(): string
     {
-        return route($this->kategori, $this->slug);
+        return route($this->kategori) . '#' . $this->slug;
     }
 
     /**

@@ -68,10 +68,10 @@ it('tidak mewajibkan sampul baru saat mengubah berita yang sudah bersampul, dan 
     $sampulLama = $berita->gambar_sampul;
 
     $this->actingAs($this->admin)
-        ->put("/admin/berita/{$berita->id}", dataBerita(['judul' => 'Judul Diperbarui', 'kategori' => 'rilis-pers']))
+        ->put("/admin/berita/{$berita->id}", dataBerita(['judul' => 'Judul Diperbarui', 'kategori' => 'pengumuman']))
         ->assertSessionHasNoErrors();
     expect($berita->refresh()->judul)->toBe('Judul Diperbarui')
-        ->and($berita->kategori)->toBe('rilis-pers')
+        ->and($berita->kategori)->toBe('pengumuman')
         ->and($berita->gambar_sampul)->toBe($sampulLama);
 
     $this->actingAs($this->admin)
@@ -103,4 +103,12 @@ it('memfilter berita berdasarkan kategori di admin dan publik', function () {
         ->assertSee('aria-current="page"', false);
 
     $this->get('/berita/senam-pagi')->assertOk()->assertSee('Kegiatan');
+});
+
+it('menolak kategori Rilis Pers yang sudah dihapus', function () {
+    $this->actingAs($this->admin)
+        ->post('/admin/berita', dataBerita(['kategori' => 'rilis-pers', 'gambar_sampul' => UploadedFile::fake()->image('a.jpg', 1600, 900)]))
+        ->assertSessionHasErrors('kategori');
+
+    $this->get('/berita')->assertOk()->assertDontSee('Rilis Pers');
 });

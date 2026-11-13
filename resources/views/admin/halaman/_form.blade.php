@@ -103,7 +103,7 @@
         <div class="mt-2">
             <input type="text" name="grup" id="grup" maxlength="50" list="daftar-grup"
                    value="{{ old('grup', $halaman->grup) }}"
-                   placeholder="Contoh: Perizinan"
+                   placeholder="Contoh: Kunjungan & WBP"
                    class="{{ $inputClass }} {{ $errors->has('grup') ? 'border-red-500' : 'border-gray-300' }}">
             <datalist id="daftar-grup">
                 @foreach ($daftarGrup as $grup)
@@ -203,7 +203,7 @@
 
         function perbaruiPreview() {
             const nilai = slug.value || stringToSlug(judul.value);
-            preview.textContent = '/' + kategori.value + '/' + (nilai || '...');
+            preview.textContent = '/' + kategori.value + '#' + (nilai || '...');
         }
 
         judul.addEventListener('input', function () {

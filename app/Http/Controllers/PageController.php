@@ -3,58 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Models\Halaman;
+use App\Models\StrukturOrganisasi;
 
+/**
+ * Setiap kategori (Profil, Layanan, Informasi Publik) tampil sebagai satu halaman
+ * panjang: tiap halaman menjadi satu seksi, dan sub-menu navbar menjadi penanda gulir.
+ */
 class PageController extends Controller
 {
-    /**
-     * Menampilkan halaman kategori Tentang Kami.
-     */
     public function tentangKami(?string $slug = null)
     {
         return $this->tampilkan('tentang-kami', $slug);
     }
 
-    /**
-     * Menampilkan halaman kategori Layanan.
-     */
     public function layanan(?string $slug = null)
     {
         return $this->tampilkan('layanan', $slug);
     }
 
-    /**
-     * Menampilkan halaman kategori Informasi Publik.
-     */
     public function informasiPublik(?string $slug = null)
     {
         return $this->tampilkan('informasi-publik', $slug);
     }
 
     /**
-     * Mengambil halaman berstatus publikasi berdasarkan kategori & slug.
-     * Tanpa slug, tampilkan halaman pertama sesuai urutan menu.
+     * Tanpa slug: tampilkan semua seksi kategori. Dengan slug (tautan lama):
+     * alihkan permanen ke seksinya, atau 404 bila halaman tidak ada / draft.
      */
     protected function tampilkan(string $kategori, ?string $slug)
     {
-        $menuItems = Halaman::publikasi()
-            ->where('kategori', $kategori)
-            ->urut()
-            ->get(['id', 'kategori', 'slug', 'judul']);
+        if ($slug !== null) {
+            $ada = Halaman::publikasi()->where('kategori', $kategori)->where('slug', $slug)->exists();
+            abort_unless($ada, 404);
 
-        $slug ??= $menuItems->first()?->slug;
+            return redirect()->to(route($kategori) . '#' . $slug, 301);
+        }
 
-        $halaman = Halaman::publikasi()
-            ->where('kategori', $kategori)
-            ->where('slug', $slug)
-            ->firstOrFail();
+        $halamans = Halaman::publikasi()->where('kategori', $kategori)->urut()->get();
+        abort_if($halamans->isEmpty(), 404);
 
         return view('layouts.page', [
-            'halaman' => $halaman,
-            'currentSlug' => $halaman->slug,
-            'pageTitle' => $halaman->judul,
+            'halamans' => $halamans,
             'categoryTitle' => Halaman::KATEGORI[$kategori],
             'categoryRoute' => $kategori,
-            'menuItems' => $menuItems->pluck('judul', 'slug'),
+            'deskripsiKategori' => Halaman::DESKRIPSI_KATEGORI[$kategori] ?? null,
+            'struktur' => $halamans->contains('slug', Halaman::SLUG_STRUKTUR)
+                ? StrukturOrganisasi::pohon()
+                : null,
         ]);
     }
 }

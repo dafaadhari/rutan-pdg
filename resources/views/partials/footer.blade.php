@@ -58,7 +58,7 @@
             <h2 class="{{ $kelasJudul }}">Layanan</h2>
             <ul class="space-y-2.5">
                 @foreach ($layananFooter as $layanan)
-                    <li><a href="{{ route('layanan', $layanan->slug) }}" class="{{ $kelasTautan }}">{{ $layanan->judul }}</a></li>
+                    <li><a href="{{ $layanan->url }}" class="{{ $kelasTautan }}">{{ $layanan->judul }}</a></li>
                 @endforeach
                 <li><a href="{{ route('layanan') }}" class="{{ $kelasTautan }} font-semibold text-white">Semua layanan <x-panah /></a></li>
             </ul>
@@ -68,10 +68,10 @@
         <div class="lg:col-span-2">
             <h2 class="{{ $kelasJudul }}">Informasi</h2>
             <ul class="space-y-2.5">
-                <li><a href="{{ route('tentang-kami') }}" class="{{ $kelasTautan }}">Tentang Kami</a></li>
+                <li><a href="{{ route('tentang-kami') }}" class="{{ $kelasTautan }}">Profil</a></li>
                 <li><a href="{{ route('informasi-publik') }}" class="{{ $kelasTautan }}">Informasi Publik</a></li>
                 <li><a href="{{ route('berita.index') }}" class="{{ $kelasTautan }}">Berita & Kegiatan</a></li>
-                <li><a href="{{ route('home') }}#maklumat" class="{{ $kelasTautan }}">Maklumat &amp; Pengaduan</a></li>
+                <li><a href="{{ route('home') }}#maklumat" class="{{ $kelasTautan }}">Maklumat Pelayanan</a></li>
             </ul>
         </div>
 
@@ -134,9 +134,9 @@
     @endif
 
     <div class="border-t border-navy-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-2 text-center md:text-left text-xs text-navy-300">
+        {{-- Tidak ada tautan ke panel admin di situs publik; pengelola masuk lewat /admin --}}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 text-center md:text-left text-xs text-navy-300">
             <p>&copy; {{ date('Y') }} Rutan Kelas IIB Pandeglang · Kementerian Imigrasi dan Pemasyarakatan RI.</p>
-            <a href="{{ route('login') }}" class="hover:text-white transition focus:outline-none focus-visible:underline">Akses Admin</a>
         </div>
     </div>
 </footer>
